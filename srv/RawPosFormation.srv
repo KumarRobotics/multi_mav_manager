@@ -1,0 +1,4 @@
+quadrotor_msgs/FlatOutputs[] goals
+---
+bool success
+string message

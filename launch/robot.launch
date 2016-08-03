@@ -1,0 +1,71 @@
+<launch>
+
+  <arg name="model"/>
+  <arg name="sim" default="1"/>
+  <arg name="config_path"/>
+  <arg name="serial_device" default="/dev/ttyUSB0"/>
+
+  <group ns="$(arg model)">
+
+    <arg name="mass" value="0.563"/>
+    <param name="mass" value="$(arg mass)"/>
+
+    <rosparam file="$(arg config_path)/params.yaml"/>
+
+    <node pkg="nodelet"
+      type="nodelet"
+      name="standalone_nodelet"
+      args="manager"
+      output="screen"/>
+
+    <node pkg="nodelet"
+      type="nodelet"
+      name="trackers_manager"
+      args="load trackers_manager/TrackersManager standalone_nodelet"
+      output="screen">
+      <rosparam file="$(find trackers_manager)/config/trackers.yaml"/>
+      <rosparam file="$(arg config_path)/gains.yaml"/>
+      <remap from="~odom" to="odom"/>
+      <remap from="~cmd" to="position_cmd"/>
+    </node>
+
+    <node pkg="nodelet"
+      type="nodelet"
+      args="load so3_control/SO3ControlNodelet standalone_nodelet"
+      name="so3_control"
+      required="true"
+      output="screen">
+      <rosparam file="$(arg config_path)/gains.yaml"/>
+      <param name="mass" value="$(arg mass)"/>
+      <remap from="~odom" to="odom"/>
+      <remap from="~position_cmd" to="position_cmd"/>
+      <remap from="~so3_cmd" to="so3_cmd"/>
+      <remap from="~motors" to="motors"/>
+    </node>
+
+    <include file="$(find multi_mav_manager)/launch/robot_sim.launch" if="$(arg sim)">
+      <arg name="model" value="$(arg model)"/>
+    </include>
+
+    <node pkg="mesh_visualization"
+      type="mesh_visualization"
+      name="mesh_visualization"
+      output="screen">
+      <param name="mesh_resource" value="package://mesh_visualization/mesh/hummingbird.mesh"/>
+      <remap from="~input" to="odom"/>
+    </node>
+
+    <include file="$(find multi_mav_manager)/launch/robot_comms.launch" unless="$(arg sim)">
+      <arg name="device" value="$(arg serial_device)"/>
+      <arg name="baud_rate" value="57600"/>
+    </include>
+
+    <node pkg="multi_mav_manager"
+      type="multi_mav_manager"
+      name="mav_services"
+      output="screen">
+      <rosparam file="$(arg config_path)/mav_manager.yaml"/>
+    </node>
+
+  </group>
+</launch>

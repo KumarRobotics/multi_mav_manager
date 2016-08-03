@@ -1,0 +1,103 @@
+
+<launch>
+
+  <arg name="sim" default="1"/>
+  <arg name="config_path" value="$(find multi_mav_manager)/config"/>
+
+  <rosparam file="$(arg config_path)/params.yaml"/>
+
+  <group if="$(arg sim)">
+    <rosparam file="$(arg config_path)/sim_params.yaml"/>
+  </group>
+
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy1"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy2"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy3"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy4"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy5"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy6"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy7"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy8"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy9"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy10"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy11"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <include file="$(find multi_mav_manager)/launch/robot.launch">
+    <arg name="model" value="crazy12"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="serial_device" value=""/>
+  </include>
+  
+  <node pkg="multi_mav_manager"
+      type="multi_mav_services"
+      name="multi_mav_services"
+      output="screen">
+  </node>
+
+</launch>

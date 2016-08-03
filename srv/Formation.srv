@@ -1,0 +1,10 @@
+string[] param_names
+float32[] param_vals 
+float32 roll
+float32 pitch
+float32 yaw
+float32 spacing
+float32[3] center
+---
+bool success
+string message
