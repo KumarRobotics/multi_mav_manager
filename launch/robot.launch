@@ -60,8 +60,8 @@
       <arg name="baud_rate" value="57600"/>
     </include>
 
-    <node pkg="multi_mav_manager"
-      type="multi_mav_manager"
+    <node pkg="mav_manager"
+      type="mav_manager_node"
       name="mav_services"
       output="screen">
       <rosparam file="$(arg config_path)/mav_manager.yaml"/>

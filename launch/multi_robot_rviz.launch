@@ -1,7 +1,6 @@
-
 <launch>
   <node pkg="rviz"
     type="rviz"
     name="rviz"
-    args="-d $(find multi_mav_manager)/config/multi_robot/rviz_config.rviz"/>
+    args="-d $(find multi_mav_manager)/config/rviz_config.rviz"/>
 </launch>
