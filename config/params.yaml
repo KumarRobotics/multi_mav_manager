@@ -29,4 +29,4 @@ model_names: [
 /crazy11/formation_offsets: [ 3.84, 1.00, 0.00, 0.00]
 /crazy12/formation_offsets: [ 2.84, 2.80, 0.00, 0.00]
 
-robot_radius: .01
+robot_radius: 0.225
