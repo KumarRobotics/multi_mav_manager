@@ -1,0 +1,29 @@
+<launch>
+  <arg name="sim" default="1"/>
+  <arg name="use_vicon" default="0"/> <!-- Otherwise, if not sim, use qualisys -->
+ 
+  <group unless="$(arg sim)">
+    <include file="$(find vicon)/launch/vicon.launch" if="$(arg use_vicon)"/>
+
+    <node pkg="mocap_qualisys"
+      type="mocap_qualisys_node"
+      name="qualisys"
+      output="screen"
+      unless="$(arg use_vicon)">
+      <param name="server_address" value="192.168.129.216"/>
+      <param name="server_base_port" value="22222"/>
+      <param name="frame_rate" value="100"/>
+      <param name="max_accel" value="10.0"/>
+      <param name="publish_tf" value="false"/>
+      <param name="fixed_frame_id" value="mocap"/>
+      <rosparam param="model_list">
+        ['QuadrotorTango', 'QuadrotorUniform', 'QuadrotorVictor', 'QuadrotorWhiskey', 'QuadrotorXray']
+      </rosparam>
+      <remap from="qualisys/QuadrotorTango/odom" to="/QuadrotorTango/odom"/>
+      <remap from="qualisys/QuadrotorUniform/odom" to="/QuadrotorUniform/odom"/>
+      <remap from="qualisys/QuadrotorVictor/odom" to="/QuadrotorVictor/odom"/>
+      <remap from="qualisys/QuadrotorWhiskey/odom" to="/QuadrotorWhiskey/odom"/>
+      <remap from="qualisys/QuadrotorXray/odom" to="/QuadrotorXray/odom"/>
+    </node>
+  </group>
+</launch>
