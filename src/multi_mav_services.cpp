@@ -267,7 +267,7 @@ bool MMControl::goForm(multi_mav_manager::Formation::Request &req, multi_mav_man
 
   for(int i=0; i<num_active_bots; i++){
 
-    ROS_INFO_STREAM("Robot: " << i << " has goal number " << assignment_matrix_[i]);
+    ROS_DEBUG_STREAM("Robot: " << i << " has goal number " << assignment_matrix_[i]);
     srv.request.goal[0] = goals_[assignment_matrix_[i]](0);
     srv.request.goal[1] = goals_[assignment_matrix_[i]](1);
     srv.request.goal[2] = goals_[assignment_matrix_[i]](2);
@@ -329,17 +329,15 @@ void MMControl::calculateDuration(){
   // duration_ = std::sqrt(max_dist_) * 3; // TODO make a better heuristic for temporal scaling
   // duration_ = 0.2 + (max_dist_ / 0.25); // TODO Change to max velocity and min duration variables or params
 
-  float vmax, amax;
-  // JT: Do we need error checking here? 
+  float vmax(2.0), amax(1.0);
   nh.getParam("max_vel", vmax);
   nh.getParam("max_acc", amax);
-  float dist = max_dist_;
-  ROS_INFO("Using max_vel = %2.2f and max_acc = %2.2f over a distance of %2.2fm", vmax, amax, dist);
+  ROS_INFO("Using max_vel = %2.2f m/s and max_acc = %2.2f m/s^2 over a distance of %2.2f m", vmax, amax, max_dist_);
 
   // To determine the duration, see JT's matlab script in std_trackers/matlab
   duration_ = std::max(
-      15.0 * dist / (8.0 * vmax),
-      std::sqrt((40.0 * std::sqrt(3.0) * dist) / (3.0 * amax)) / 2.0);
+      15.0 * max_dist_ / (8.0 * vmax),
+      std::sqrt((40.0 * std::sqrt(3.0) * max_dist_) / (3.0 * amax)) / 2.0);
 
   t_start_ = ros::Time::now() + ros::Duration(num_active_bots * .01);  // Linearly scale start time by number of robots present
 }
@@ -510,8 +508,6 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
 // Function gets called when a robot changes it's active status
 void MMControl::checkActiveRobots()
 {
-  ROS_INFO("checkActiveRobots called");
-
   active_robots_.clear();   // Remove all robots from active list
 
   // TODO: monitor for changes in active states, do stuff if that changes

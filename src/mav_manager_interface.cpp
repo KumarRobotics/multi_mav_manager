@@ -3,12 +3,12 @@
 class MMcontrol;
 
 MavManagerInterface::MavManagerInterface(std::string model_name, bool active, float battery_low, MMControl* mmc)
-  : model_name_(model_name)
-  , active_(active)
+  : active_(active)
   , battery_low_(battery_low)
   , mmc_(mmc)
   , nh("multi_mav_services")
   , priv_nh("")
+  , model_name_(model_name)
 {
   //std::cout << "Creating Mav Manager Interface object for " << model_name_ << std::endl;
 

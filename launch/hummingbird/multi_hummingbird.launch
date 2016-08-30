@@ -6,10 +6,11 @@
   <arg name="config_path" value="$(find multi_mav_manager)/config/hummingbird"/>
 
   <!-- MoCap -->
-  <include file="$(find multi_mav_manager)/launch/hummingbird/mocap.launch" if="$(arg launch_mocap)">
-    <arg name="sim" value="$(arg sim)"/>
-    <arg name="use_vicon" value="$(arg use_vicon)"/>
-  </include>
+  <group unless="$(arg sim)">
+    <include file="$(find multi_mav_manager)/launch/hummingbird/mocap.launch" if="$(arg launch_mocap)">
+      <arg name="use_vicon" value="$(arg use_vicon)"/>
+    </include>
+  </group>
 
   <group if="$(arg sim)">
     <rosparam file="$(arg config_path)/sim_params.yaml"/>
@@ -18,6 +19,7 @@
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
     <arg name="model" value="QuadrotorTango"/>
     <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="serial_device" value="/dev/tty.usbserial-A103VTK7"/>
   </include>
@@ -25,6 +27,7 @@
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
     <arg name="model" value="QuadrotorUniform"/>
     <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="serial_device" value="/dev/tty.usbserial-A103VTA4"/>
   </include>
@@ -32,6 +35,7 @@
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
     <arg name="model" value="QuadrotorVictor"/>
     <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="serial_device" value="/dev/tty.usbserial-A4001ucS"/>
   </include>
@@ -39,6 +43,7 @@
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
     <arg name="model" value="QuadrotorWhiskey"/>
     <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="serial_device" value="/dev/tty.usbserial-A103VSLA"/>
   </include>
@@ -46,6 +51,7 @@
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
     <arg name="model" value="QuadrotorXray"/>
     <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="serial_device" value="/dev/tty.usbserial-A6007w2D"/>
   </include>
@@ -54,12 +60,7 @@
       type="multi_mav_services"
       name="multi_mav_services"
       output="screen">
-    <rosparam file="$(arg config_path)/params.yaml"/>
+    <rosparam file="$(arg config_path)/multi_mav_manager.yaml"/>
   </node>
 
-  <node pkg="rosbag"
-    type="record"
-    name="record"
-    args="-a"/>
-  
 </launch>

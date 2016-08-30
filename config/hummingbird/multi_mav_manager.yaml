@@ -3,16 +3,15 @@
 # you make may be overwritten. See params_generator.m to make changes
 # and regenerate the file.
 
-model_names: [ 
-  "QuadrotorTango", 
-  "QuadrotorUniform", 
-  "QuadrotorVictor", 
-  "QuadrotorWhiskey", 
+model_names: [
+  "QuadrotorTango",
+  "QuadrotorUniform",
+  "QuadrotorVictor",
+  "QuadrotorWhiskey",
   "QuadrotorXray"]
 
 robot_radius: 0.35
-
-battery_low: 9.2 
+battery_low: 9.2
 
 /QuadrotorTango/active: 1
 /QuadrotorUniform/active: 1
