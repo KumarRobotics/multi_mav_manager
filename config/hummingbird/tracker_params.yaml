@@ -1,6 +1,6 @@
 line_tracker_distance:
-  default_v_des: 0.5
-  default_a_des: 0.3
+  default_v_des: 1.0
+  default_a_des: 1.0
 
 line_tracker_min_jerk:
   default_v_des: 2.0
