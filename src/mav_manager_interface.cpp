@@ -51,8 +51,20 @@ void MavManagerInterface::odom_cb(const nav_msgs::Odometry::ConstPtr &msg) {
 
 void MavManagerInterface::battery_cb(const std_msgs::Float32 &msg) {
   battery_ = msg.data;
-  if(battery_ < battery_low_){
+
+  unsigned int battery_update_rate = 10; // Hz
+  unsigned int timeout = 4; // seconds
+
+  static unsigned int counter = 0;
+  if(battery_ < battery_low_)
+    counter++;
+  else
+    counter = 0;
+
+  if (counter > timeout * battery_update_rate)
+  {
     std_srvs::Trigger srv;
+    ROS_WARN_STREAM(model_name_ << " has a low battery of " << battery_ << "V.");
     MavManagerInterface::deactivate();
   }
 }

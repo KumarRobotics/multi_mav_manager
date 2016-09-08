@@ -49,7 +49,8 @@ class MavManagerInterface
     ros::ServiceClient
       sc_motors,
       sc_takeoff,
-      sc_goHome, sc_goTo,
+      sc_goHome,
+      sc_goTo,
       sc_goToTimed,
       sc_setDesVelInWorldFrame,
       sc_hover,
