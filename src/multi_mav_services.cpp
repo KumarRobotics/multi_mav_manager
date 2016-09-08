@@ -339,7 +339,7 @@ void MMControl::calculateDuration(){
       15.0 * max_dist_ / (8.0 * vmax),
       std::sqrt((40.0 * std::sqrt(3.0) * max_dist_) / (3.0 * amax)) / 2.0);
 
-  t_start_ = ros::Time::now() + ros::Duration(num_active_bots * .01);  // Linearly scale start time by number of robots present
+  t_start_ = ros::Time::now() + ros::Duration(num_active_bots * 0.02);  // Linearly scale start time by number of robots present
 }
 
 void MMControl::calculateGoals(){
@@ -433,17 +433,20 @@ bool MMControl::loop(typename T::Request &req, typename T::Response &res, ros::S
   for(unsigned int i = 0; i < active_robots_.size(); i++)
   {
     ros::ServiceClient service = (*active_robots_[i]).*sc;
+    ros::Duration(0.1).sleep();
     if (!service.call(srv))
     {
       res.success = false;
-      res.message = res.message + (*active_robots_[i]).model_name_ + " failed to call " + str + ".\n" +
-        "on service " + service.getService() + "\n";
+      res.message = res.message + "\n\t" + (*active_robots_[i]).model_name_ + " failed to call " + str + ".\n" +
+        "on service " + service.getService();
     }
     else
     {
       res.success = res.success & srv.response.success;
+      res.message = res.message + "\n\tResponse from " + (*active_robots_[i]).model_name_ + ": " + srv.response.message;
     }
   }
+  res.message = res.message + "\n";
   return true;
 }
 
