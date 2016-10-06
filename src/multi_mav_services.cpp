@@ -438,7 +438,7 @@ bool MMControl::loop(typename T::Request &req, typename T::Response &res, ros::S
     {
       res.success = false;
       res.message = res.message + "\n\t" + (*active_robots_[i]).model_name_ + " failed to call " + str + ".\n" +
-        "on service " + service.getService();
+        "on service " + service.getService() + "\n";
     }
     else
     {

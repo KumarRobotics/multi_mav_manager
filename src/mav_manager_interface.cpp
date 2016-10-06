@@ -50,6 +50,9 @@ void MavManagerInterface::odom_cb(const nav_msgs::Odometry::ConstPtr &msg) {
 }
 
 void MavManagerInterface::battery_cb(const std_msgs::Float32 &msg) {
+  // See https://github.com/bitcraze/crazyflie-firmware/blob/master/src/hal/src/pm_f405.c
+  // for crazyflie battery monitoring.
+
   battery_ = msg.data;
 
   unsigned int battery_update_rate = 10; // Hz
