@@ -20,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
   cmake_modules
   message_generation)
 
-find_package(Eigen REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 include_directories(
   include
@@ -55,7 +55,7 @@ catkin_package(
     std_msgs
     std_srvs
     message_runtime
-  DEPENDS Eigen)
+  DEPENDS Eigen3)
 
 add_library(capt include/capt/hungarian/hungarian.cpp)
 

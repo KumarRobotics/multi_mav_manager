@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Don't forget to source the setup.bash file.
-#
+source ~/ws_multi_hummingbird_demo/devel/setup.bash
+
 # This script assumes that you have launched:
-#   roslaunch multi_mav_manager hummingbirds.launch
+#   roslaunch multi_mav_manager multi_hummingbird.launch sim:=0 launch_mocap:=1
 
 SPACING=1.5
 
@@ -32,7 +33,7 @@ rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.4, yaw: 0
 sleep 1
 
 read -p "Press [Enter] to make a line"
-rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.2, yaw: 0.0, center: [-4.0, 0.0, 1.5], spacing: $SPACING}"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.2, yaw: 0.0, center: [-2.0, 0.0, 1.5], spacing: $SPACING}"
 sleep 1
 
 read -p "Press [Enter] to move the line"
@@ -44,11 +45,11 @@ rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0
 sleep 1
 
 read -p "Press [Enter] to move circle"
-rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.4, yaw: 0.0, center: [-4.0, 0.0, 1.0], spacing: $SPACING}"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.4, yaw: 0.0, center: [0.0, 0.0, 1.0], spacing: $SPACING}"
 sleep 1
 
 read -p "Press [Enter] to make a line"
-rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.2, yaw: 0.0, center: [-3.0, 0.0, 1.5], spacing: $SPACING}"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.2, yaw: 0.0, center: [2.0, 0.0, 1.5], spacing: $SPACING}"
 sleep 1
 
 read -p "Press [Enter] to land"

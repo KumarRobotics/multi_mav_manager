@@ -23,7 +23,7 @@
     <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="mass" value="$(arg masses)"/>
-    <arg name="serial_device" value="/dev/tty.usbserial-A103VTK7"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A103VTK7-if00-port0"/>
   </include>
 
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
@@ -32,7 +32,7 @@
     <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="mass" value="$(arg masses)"/>
-    <arg name="serial_device" value="/dev/tty.usbserial-A103VTA4"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A103VTA4-if00-port0"/>
   </include>
 
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
@@ -41,7 +41,7 @@
     <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="mass" value="$(arg masses)"/>
-    <arg name="serial_device" value="/dev/tty.usbserial-A4001ucS"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A4001ucS-if00-port0"/>
   </include>
 
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
@@ -50,7 +50,7 @@
     <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="mass" value="$(arg masses)"/>
-    <arg name="serial_device" value="/dev/tty.usbserial-A103VSLA"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A103VSLA-if00-port0"/>
   </include>
 
   <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird.launch">
@@ -59,7 +59,7 @@
     <arg name="config_path" value="$(arg config_path)"/>
     <arg name="vicon" value="$(arg use_vicon)"/>
     <arg name="mass" value="$(arg masses)"/>
-    <arg name="serial_device" value="/dev/tty.usbserial-A6007w2D"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A6007w2D-if00-port0"/>
   </include>
 
   <node pkg="multi_mav_manager"
