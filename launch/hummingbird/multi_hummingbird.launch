@@ -2,7 +2,7 @@
 
   <arg name="sim" default="1"/>
   <arg name="launch_mocap" default="0"/>
-  <arg name="use_vicon" default="0"/> <!-- Otherwise, if not sim, use qualisys -->
+  <arg name="use_vicon" default="1"/> <!-- Otherwise, if not sim, use qualisys -->
   <arg name="config_path" value="$(find multi_mav_manager)/config/hummingbird"/>
   <arg name="masses" value="0.58"/>
 

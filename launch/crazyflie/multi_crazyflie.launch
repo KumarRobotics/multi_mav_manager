@@ -11,8 +11,6 @@
     <rosparam file="$(arg config_path)/sim_params.yaml"/>
   </group>
 
-  <!--
-  -->
 
   <include file="$(arg launch_path)/crazyflie.launch">
     <arg name="model" value="crazy01"/>
@@ -39,7 +37,7 @@
     <arg name="model" value="crazy04"/>
     <arg name="sim" value="$(arg sim)"/>
     <arg name="config_path" value="$(arg config_path)"/>
-    <arg name="uri" value="radio://1/10/2M/0xE7E7E7E704"/>
+    <arg name="uri" value="radio://1/10/2M/0xE7E7E7E703"/>
   </include>
 
   <include file="$(arg launch_path)/crazyflie.launch">
@@ -53,7 +51,7 @@
     <arg name="model" value="crazy06"/>
     <arg name="sim" value="$(arg sim)"/>
     <arg name="config_path" value="$(arg config_path)"/>
-    <arg name="uri" value="radio://2/50/2M/0xE7E7E7E706"/>
+    <arg name="uri" value="radio://1/10/2M/0xE7E7E7E703"/>
   </include>
 
   <node pkg="multi_mav_manager"
@@ -63,24 +61,23 @@
     <rosparam file="$(arg config_path)/multi_mav_manager.yaml"/>
   </node>
 
-  <node pkg="mocap_qualisys"
-    type="mocap_qualisys_node"
-    name="qualisys"
+  <node pkg="mocap_vicon"
+    type="mocap_vicon_node"
+    name="vicon"
     output="screen"
     unless="$(arg sim)">
-    <param name="server_address" value="mocap"/>
-    <param name="server_base_port" value="22222"/>
+    <param name="server_address" value="alkaline2"/>
     <param name="frame_rate" value="100"/>
     <param name="max_accel" value="10.0"/>
-    <param name="publish_tf" value="true"/>
+    <param name="publish_tf" value="false"/>
     <param name="fixed_frame_id" value="mocap"/>
     <rosparam param="model_list">[]</rosparam>
-    <remap from="qualisys/crazy01/odom" to="/crazy01/odom"/>
-    <remap from="qualisys/crazy02/odom" to="/crazy02/odom"/>
-    <remap from="qualisys/crazy03/odom" to="/crazy03/odom"/>
-    <remap from="qualisys/crazy04/odom" to="/crazy04/odom"/>
-    <remap from="qualisys/crazy05/odom" to="/crazy05/odom"/>
-    <remap from="qualisys/crazy06/odom" to="/crazy06/odom"/>
+    <remap from="vicon/crazy01/odom" to="/crazy01/odom"/>
+    <remap from="vicon/crazy02/odom" to="/crazy02/odom"/>
+    <remap from="vicon/crazy03/odom" to="/crazy03/odom"/>
+    <remap from="vicon/crazy04/odom" to="/crazy04/odom"/>
+    <remap from="vicon/crazy05/odom" to="/crazy05/odom"/>
+    <remap from="vicon/crazy06/odom" to="/crazy06/odom"/>
   </node>
 
 </launch>

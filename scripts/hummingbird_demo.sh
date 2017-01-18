@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Don't forget to source the setup.bash file.
-source ~/ws_multi_hummingbird_demo/devel/setup.bash
+source /home/demo/programs/ros/multi_ws/devel/setup.bash
 
 # This script assumes that you have launched:
 #   roslaunch multi_mav_manager multi_hummingbird.launch sim:=0 launch_mocap:=1
