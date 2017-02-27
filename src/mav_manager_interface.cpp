@@ -53,23 +53,33 @@ void MavManagerInterface::battery_cb(const std_msgs::Float32 &msg) {
   // See https://github.com/bitcraze/crazyflie-firmware/blob/master/src/hal/src/pm_f405.c
   // for crazyflie battery monitoring.
 
-  battery_ = msg.data;
-
-  unsigned int battery_update_rate = 10; // Hz
-  unsigned int timeout = 4; // seconds
-
-  static unsigned int counter = 0;
-  if(battery_ < battery_low_)
-    counter++;
-  else
-    counter = 0;
-
-  if (counter > timeout * battery_update_rate)
-  {
-    std_srvs::Trigger srv;
-    ROS_WARN_STREAM(model_name_ << " has a low battery of " << battery_ << "V.");
-    MavManagerInterface::deactivate();
-  }
+//   battery_ = msg.data;
+//   ROS_INFO_STREAM(model_name_ << " battery reading "
+// 
+//   unsigned int battery_update_rate = 10; // Hz
+//   unsigned int timeout = 4; // seconds
+// 
+//   static unsigned int counter(0);
+//  if(battery_ < battery_low_) {
+//    ROS_INFO_STREAM(model_name_ << "low battery reading " << counter << "/" << battery_update_rate * timeout);
+//    counter++;
+//    ROS_INFO_STREAM(model_name_ << "after low battery reading " << counter << "/" << battery_update_rate * timeout);
+//  }
+//  else {
+//    ROS_INFO_STREAM(model_name_ << "low battery counter reset");
+//    counter = 0;
+//  }
+//
+//  // Disabled deactivate after low battery because shit went crazy
+//  // Probably because deactivate isn't stable
+//  counter = 0;
+//
+//  if (counter > timeout * battery_update_rate)
+//  {
+//    std_srvs::Trigger srv;
+//    ROS_WARN_STREAM(model_name_ << " has a low battery of " << battery_ << "V.");
+//    MavManagerInterface::deactivate();
+//  }
 }
 
 bool MavManagerInterface::deactivate_cb(std_srvs::Trigger::Request &req,  std_srvs::Trigger::Response &res){
