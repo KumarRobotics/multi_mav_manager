@@ -11,7 +11,6 @@
     <rosparam file="$(arg config_path)/sim_params.yaml"/>
   </group>
 
-
   <include file="$(arg launch_path)/crazyflie.launch">
     <arg name="model" value="crazy01"/>
     <arg name="sim" value="$(arg sim)"/>
