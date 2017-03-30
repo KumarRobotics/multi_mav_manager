@@ -9,13 +9,6 @@
   <arg name="mass" default="0.5"/>
   <arg name="serial_device" default="/dev/ttyUSB0"/>
 
-  <!-- Launch vicon odometry node -->
-  <group if="$(arg vicon)">
-    <include file="$(find vicon_odom)/launch/vicon_odom.launch" unless="$(arg sim)">
-      <arg name="model" value="$(arg model)" />
-      <arg name="vicon_fps" value="$(arg vicon_fps)"/>
-    </include>
-  </group>
 
   <group ns="$(arg model)">
 
