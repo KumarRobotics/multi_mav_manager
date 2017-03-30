@@ -1,8 +1,6 @@
 #!/bin/bash
 
-MODELS='crazy03'
-# MODELS='crazy01 crazy02 crazy03 crazy04 crazy05 crazy06'
-# MODELS='crazy01 crazy02 crazy03 crazy05'
+MODELS='crazy01 crazy02 crazy03 crazy04 crazy05 crazy06'
 
 # Roll and pitch gains
 KP=10
@@ -104,7 +102,7 @@ for MODEL in $MODELS; do
   rosparam get /$MODEL/pid_rate/yaw_kd
   
   rosparam set /$MODEL/pid_rate/yaw_kp 160
-  rosparam set /$MODEL/pid_rate/yaw_ki 0 
+  rosparam set /$MODEL/pid_rate/yaw_ki 0
   rosparam set /$MODEL/pid_rate/yaw_kd 0
     
   printf '\nNew Yaw Rate kp, ki, and kd\n'
