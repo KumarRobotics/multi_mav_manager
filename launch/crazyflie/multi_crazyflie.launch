@@ -65,7 +65,7 @@
     name="vicon"
     output="screen"
     unless="$(arg sim)">
-    <param name="server_address" value="alkaline2"/>
+    <param name="server_address" value="alkaline3"/>
     <param name="frame_rate" value="100"/>
     <param name="max_accel" value="10.0"/>
     <param name="publish_tf" value="false"/>
