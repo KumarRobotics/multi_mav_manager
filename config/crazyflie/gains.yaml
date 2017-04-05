@@ -1,5 +1,4 @@
 gains:
-  # Note: These gains need checked and/or tuned more
   pos: {x: 8.000, y: 8.000, z: 13.000}
   vel: {x: 5.000, y: 5.000, z: 5.000}
   ki:  {x: 0.1, y: 0.1, z: 0.2}
