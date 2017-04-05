@@ -1,11 +1,14 @@
 gains:
   # Note: These gains need checked and/or tuned more
-  pos: {x: 0.180, y: 0.180, z: 0.312}
-  vel: {x: 0.150, y: 0.150, z: 0.180}
-  rot: {x: 0.009, y: 0.009, z: 0.060}
-  ang: {x: 0.0075, y: 0.0075, z: 0.006}
-  ki:  {x: 0.0, y: 0.0, z: 0.005}
+  pos: {x: 8.000, y: 8.000, z: 13.000}
+  vel: {x: 5.000, y: 5.000, z: 5.000}
+  ki:  {x: 0.1, y: 0.1, z: 0.2}
+  kib: {x: 0.1, y: 0.1, z: 0.1}
 corrections:
   kf: 0.0 
   r: 0.0
   p: 0.0
+
+max_pos_int: 2.6
+max_pos_int_b: 2.6
+max_tilt_angle: 3.14
