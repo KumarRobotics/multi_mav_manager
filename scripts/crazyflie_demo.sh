@@ -78,10 +78,6 @@ rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.25, yaw: 1
 sleep 1
 
 read -p "Press [Enter] to move the line"
-rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.25, yaw: 1.59, center: [-1.0, 0.0, 1.5], spacing: $SPACING}"
-sleep 1
-
-read -p "Press [Enter] to move the line"
 rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.0, yaw: 1.59, center: [-1.0, 0.0, 1.5], spacing: $SPACING}"
 sleep 1
 
