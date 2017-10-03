@@ -81,7 +81,7 @@ bool MMControl::goFormAngle_cb(multi_mav_manager::Formation::Request &req, multi
     return true;
   }
 
-  double angle = M_PI/2; // Default angle is 90 degrees, ensure separation between second two
+  double angle = M_PI/3; // Default angle is 90 degrees, ensure separation between second two
 
   for(unsigned int i=0; i < req.param_names.size(); i++){
 
@@ -96,13 +96,13 @@ bool MMControl::goFormAngle_cb(multi_mav_manager::Formation::Request &req, multi
       ROS_WARN_STREAM("Param " << str << " is invalid");
   }
 
-  if(angle < M_PI/2){
-    angle = M_PI/2;
+  if(angle < M_PI/3){
+    angle = M_PI/3;
     res.message += "\nDesired angle is too small, forced to minimum, pi/2 (90 degrees)";
   }
 
-  int x_side = 1; // Right side
-  int radius = 0; // Distance away from leader
+  double x_side = 1.0; // Right side
+  double radius = 0.0; // Distance away from leader
 
   for(int i=0; i<num_active_bots; i++){
     formation_offsets_[i][0] = -1 * radius * std::cos(angle/2);

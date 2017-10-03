@@ -8,7 +8,7 @@ source ~/ws_multi_crazyflie_demo/devel/setup.bash
 
 # source ~/git/multi_mav_manager/scripts/set_crazyflie_gains.sh
 
-SPACING=0.5
+SPACING=0.6
 
 alias motors='rosservice call /multi_mav_services/motors'
 alias takeoff='rosservice call /multi_mav_services/takeoff'
@@ -29,64 +29,53 @@ read -p "Press [Enter] to takeoff"
 rosservice call /multi_mav_services/takeoff
 sleep 1
 
-read -p "Press [Enter] to form circle. We can make them go into formation"
-rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 1.5], spacing: $SPACING}"
+read -p "Press [Enter] to FORM CIRCLE at [0, 0, 0.7]m"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 0.7], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to expand circle. It can change"
-rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 1.5], spacing: 1.5}"
+
+read -p "Press [Enter] to EXPAND CIRCLE and MOVE to [0, 0, 2.5]m"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 2.5], spacing: 1.5}"
 sleep 1
 
-read -p "Press [Enter] to shrink to a rectangle. And go back"
-rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 1.5], spacing: $SPACING}"
+read -p "Press [Enter] to SHRINK CIRCLE and MOVE to [0, 0, 3]m"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 3.0], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to move circle"
-rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.5, yaw: 0.0, center: [1.5, 1.0, 2.0], spacing: $SPACING}"
+read -p "Press [Enter] to CHANGE to LINE without moving"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 3.0], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to move circle"
-rosservice call /multi_mav_services/goFormCircle "{roll: 0.5, pitch: 0.0, yaw: 0.0, center: [1.5, -1.0, 2.0], spacing: $SPACING}"
+read -p "Press [Enter] to CHANGE to RECTANGLE without moving"
+rosservice call /multi_mav_services/goFormRect "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 3.0], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to move circle"
-rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: -0.5, yaw: 0.0, center: [0.5, -1.0, 2.0], spacing: $SPACING}"
+read -p "Press [Enter] to CHANGE to CIRCLE and MOVE to [1 0 3]m"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [1.0, 0.0, 3.0], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to move circle"
-rosservice call /multi_mav_services/goFormCircle "{roll: -0.5, pitch: 0.0, yaw: 0.0, center: [0.5, 1.0, 2.0], spacing: $SPACING}"
+read -p "Press [Enter] to CHANGE to LINE, MOVE to [0, 0, 2], and PITCH by -0.25 rad"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.25, yaw: 0.0, center: [0.0, 0.0, 2.0], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to form rectangle"
-rosservice call /multi_mav_services/goFormRect "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 1.5], spacing: $SPACING}"
+read -p "Press [Enter] to CHANGE to LINE, MOVE to [0, 0, 1.5], and YAW by pi/2 rad (no pitch or roll)"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.00, yaw: 1.59, center: [0.0, 0.0, 1.5], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to make a pitched line"
-rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.25, yaw: 0.0, center: [0.0, 0.0, 1.5], spacing: $SPACING}"
-sleep 1
-
-read -p "Press [Enter] to yaw the line"
+read -p "Press [Enter] to MOVE to [1.5, 0, 1.5], and PITCH by -0.25 rad"
 rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.25, yaw: 1.59, center: [1.5, 0.0, 1.5], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to move the line"
-rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.25, yaw: 1.59, center: [-1.0, 0.0, 1.5], spacing: $SPACING}"
+read -p "Press [Enter] to MOVE to [-1.5, 0, 1.5], and PITCH by 0.25 rad"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.25, yaw: 1.59, center: [-1.5, 0.0, 1.5], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to move the line"
-rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.25, yaw: 1.59, center: [-1.0, 0.0, 1.5], spacing: $SPACING}"
+read -p "Press [Enter] to CHANGE to CIRCLE and MOVE to [0, 0, 1.5]m"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 1.5], spacing: $SPACING}"
 sleep 1
 
-read -p "Press [Enter] to move the line"
-rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.0, yaw: 1.59, center: [-1.0, 0.0, 1.5], spacing: $SPACING}"
-sleep 1
-
-read -p "Press [Enter] to form circle"
-rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [1.0, 0.0, 1.5], spacing: $SPACING}"
-sleep 1
-
-read -p "Press [Enter] to form Rectangle"
-rosservice call /multi_mav_services/goFormRect "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 1.0], spacing: $SPACING}"
+read -p "Press [Enter] to EXPAND CIRCLE and MOVE to [0, 0, 1.0]m. This is the last shape before landing"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 1.0], spacing: 1.00}"
 sleep 1
 
 read -p "Press [Enter] to land"
