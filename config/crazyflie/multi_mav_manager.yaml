@@ -1,20 +1,20 @@
 model_names: [
-  "crazy01",
-  "crazy02",
-  "crazy03", 
-  "crazy04", 
-  "crazy05",
-  "crazy06"]
+  "loco00",
+  "loco01",
+  "loco02",
+  "loco03", 
+  "loco04", 
+  "loco05"]
 
 robot_radius: 0.1
 battery_low: 3.50
 
-/crazy01/active: 1
-/crazy02/active: 1
-/crazy03/active: 1
-/crazy04/active: 1
-/crazy05/active: 1
-/crazy06/active: 1
+/loco00/active: 1
+/loco01/active: 1
+/loco02/active: 1
+/loco03/active: 1
+/loco04/active: 1
+/loco05/active: 1
 
 max_vel: 0.5
 max_acc: 0.5

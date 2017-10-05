@@ -12,46 +12,47 @@
   </group>
 
   <include file="$(arg launch_path)/crazyflie.launch">
-    <arg name="model" value="crazy01"/>
+    <arg name="model" value="loco00"/>
     <arg name="sim" value="$(arg sim)"/>
     <arg name="config_path" value="$(arg config_path)"/>
-    <arg name="uri" value="radio://0/100/2M/0xE7E7E7E701"/>
+    <arg name="uri" value="radio://0/60/2M/0xE7E7E7E700"/>
   </include>
 
   <include file="$(arg launch_path)/crazyflie.launch">
-    <arg name="model" value="crazy02"/>
+    <arg name="model" value="loco01"/>
     <arg name="sim" value="$(arg sim)"/>
     <arg name="config_path" value="$(arg config_path)"/>
-    <arg name="uri" value="radio://0/100/2M/0xE7E7E7E702"/>
+    <arg name="uri" value="radio://0/60/2M/0xE7E7E7E701"/>
   </include>
 
   <include file="$(arg launch_path)/crazyflie.launch">
-    <arg name="model" value="crazy03"/>
+    <arg name="model" value="loco02"/>
     <arg name="sim" value="$(arg sim)"/>
     <arg name="config_path" value="$(arg config_path)"/>
-    <arg name="uri" value="radio://1/10/2M/0xE7E7E7E703"/>
+    <arg name="uri" value="radio://0/60/2M/0xE7E7E7E702"/>
   </include>
 
   <include file="$(arg launch_path)/crazyflie.launch">
-    <arg name="model" value="crazy04"/>
+    <arg name="model" value="loco03"/>
     <arg name="sim" value="$(arg sim)"/>
     <arg name="config_path" value="$(arg config_path)"/>
-    <arg name="uri" value="radio://1/10/2M/0xE7E7E7E704"/>
+    <arg name="uri" value="radio://1/70/2M/0xE7E7E7E703"/>
   </include>
 
   <include file="$(arg launch_path)/crazyflie.launch">
-    <arg name="model" value="crazy05"/>
+    <arg name="model" value="loco04"/>
     <arg name="sim" value="$(arg sim)"/>
     <arg name="config_path" value="$(arg config_path)"/>
-    <arg name="uri" value="radio://2/50/2M/0xE7E7E7E705"/>
+    <arg name="uri" value="radio://1/70/2M/0xE7E7E7E704"/>
   </include>
 
   <include file="$(arg launch_path)/crazyflie.launch">
-    <arg name="model" value="crazy06"/>
+    <arg name="model" value="loco05"/>
     <arg name="sim" value="$(arg sim)"/>
     <arg name="config_path" value="$(arg config_path)"/>
-    <arg name="uri" value="radio://2/50/2M/0xE7E7E7E706"/>
+    <arg name="uri" value="radio://1/70/2M/0xE7E7E7E705"/>
   </include>
+
 
   <node pkg="multi_mav_manager"
       type="multi_mav_services"
@@ -65,18 +66,18 @@
     name="vicon"
     output="screen"
     unless="$(arg sim)">
-    <param name="server_address" value="alkaline3"/>
+    <param name="server_address" value="mocap"/>
     <param name="frame_rate" value="100"/>
     <param name="max_accel" value="10.0"/>
     <param name="publish_tf" value="false"/>
     <param name="fixed_frame_id" value="mocap"/>
     <rosparam param="model_list">[]</rosparam>
-    <remap from="vicon/crazy01/odom" to="/crazy01/odom"/>
-    <remap from="vicon/crazy02/odom" to="/crazy02/odom"/>
-    <remap from="vicon/crazy03/odom" to="/crazy03/odom"/>
-    <remap from="vicon/crazy04/odom" to="/crazy04/odom"/>
-    <remap from="vicon/crazy05/odom" to="/crazy05/odom"/>
-    <remap from="vicon/crazy06/odom" to="/crazy06/odom"/>
+    <remap from="vicon/loco00/odom" to="/loco00/odom"/>
+    <remap from="vicon/loco01/odom" to="/loco01/odom"/>
+    <remap from="vicon/loco02/odom" to="/loco02/odom"/>
+    <remap from="vicon/loco03/odom" to="/loco03/odom"/>
+    <remap from="vicon/loco04/odom" to="/loco04/odom"/>
+    <remap from="vicon/loco05/odom" to="/loco05/odom"/>
   </node>
 
 </launch>
