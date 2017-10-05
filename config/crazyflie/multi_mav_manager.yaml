@@ -16,5 +16,5 @@ battery_low: 3.50
 /loco04/active: 1
 /loco05/active: 1
 
-max_vel: 0.5
-max_acc: 0.5
+max_vel: 3.0
+max_acc: 2.0

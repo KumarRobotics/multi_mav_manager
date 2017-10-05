@@ -17,6 +17,11 @@ tmux send-keys Enter
 tmux split-window -h -t cfdemo
 tmux send-keys "$SW"
 tmux send-keys Enter 
+tmux send-keys "land"
+
+tmux split-window -v -t cfdemo
+tmux send-keys "$SW"
+tmux send-keys Enter
 tmux send-keys 'source ~/ws_multi_crazyflie_demo/src/multi_mav_manager/scripts/crazyflie_demo.sh'
 tmux send-keys Enter 
 
