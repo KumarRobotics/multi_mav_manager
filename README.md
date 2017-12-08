@@ -1,5 +1,5 @@
 # multi_mav_manager
-=============
+
 This is a multi MAV manager which leverages mav_manager and quadrotor_control
 for each agent.  It leverages CAPT for multi-agent planning to ensure there are
 no collisions and provides additional formation functionalities.
