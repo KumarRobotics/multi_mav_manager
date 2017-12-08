@@ -31,7 +31,7 @@ MavManagerInterface::MavManagerInterface(std::string model_name, bool active, fl
   sc_eland = nh.serviceClient<std_srvs::Trigger>(             "/" + model_name_ + "/mav_services/eland");
   sc_estop = nh.serviceClient<std_srvs::Trigger>(             "/" + model_name_ + "/mav_services/estop");
 
-  odom_sub = nh.subscribe("/" + model_name_ + "/odom", 10, &MavManagerInterface::odom_cb, this);
+  odom_sub = nh.subscribe("/" + model_name_ + "/odom_static", 10, &MavManagerInterface::odom_cb, this);
   battery_sub = nh.subscribe("/" + model_name_ + "/battery", 10, &MavManagerInterface::battery_cb, this);
 
   srv_deactivate = nh.advertiseService("/" + model_name_ + "/deactivate", &MavManagerInterface::deactivate_cb, this);

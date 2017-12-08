@@ -1,0 +1,72 @@
+<launch>
+
+  <arg name="sim" default="1"/>
+  <arg name="launch_mocap" default="0"/>
+  <arg name="use_vicon" default="1"/> <!-- Otherwise, if not sim, use qualisys -->
+  <arg name="config_path" value="$(find multi_mav_manager)/config/hummingbird"/>
+  <arg name="masses" value="0.58"/>
+
+  <!-- MoCap -->
+  <group unless="$(arg sim)">
+    <include file="$(find multi_mav_manager)/launch/hummingbird/mocap.launch" if="$(arg launch_mocap)">
+      <arg name="use_vicon" value="$(arg use_vicon)"/>
+    </include>
+  </group>
+
+  <group if="$(arg sim)">
+    <rosparam file="$(arg config_path)/sim_params.yaml"/>
+  </group>
+
+  <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird_rotate.launch">
+    <arg name="model" value="QuadrotorTango"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="vicon" value="$(arg use_vicon)"/>
+    <arg name="mass" value="$(arg masses)"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A103VTK7-if00-port0"/>
+  </include>
+
+  <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird_rotate.launch">
+    <arg name="model" value="QuadrotorUniform"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="vicon" value="$(arg use_vicon)"/>
+    <arg name="mass" value="$(arg masses)"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A103VTA4-if00-port0"/>
+  </include>
+
+  <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird_rotate.launch">
+    <arg name="model" value="QuadrotorVictor"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="vicon" value="$(arg use_vicon)"/>
+    <arg name="mass" value="$(arg masses)"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A4001ucS-if00-port0"/>
+  </include>
+
+  <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird_rotate.launch">
+    <arg name="model" value="QuadrotorWhiskey"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="vicon" value="$(arg use_vicon)"/>
+    <arg name="mass" value="$(arg masses)"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A103VSLA-if00-port0"/>
+  </include>
+
+  <include file="$(find multi_mav_manager)/launch/hummingbird/hummingbird_rotate.launch">
+    <arg name="model" value="QuadrotorXray"/>
+    <arg name="sim" value="$(arg sim)"/>
+    <arg name="config_path" value="$(arg config_path)"/>
+    <arg name="vicon" value="$(arg use_vicon)"/>
+    <arg name="mass" value="$(arg masses)"/>
+    <arg name="serial_device" value="/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A6007w2D-if00-port0"/>
+  </include>
+
+  <node pkg="multi_mav_manager"
+      type="multi_mav_services"
+      name="multi_mav_services"
+      output="screen">
+    <rosparam file="$(arg config_path)/multi_mav_manager.yaml"/>
+  </node>
+
+</launch>

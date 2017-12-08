@@ -1,0 +1,76 @@
+<launch>
+
+  <arg name="config_path"/>
+  <arg name="mass"/> 
+  <arg name="sim"/>
+  <arg name="model"/> 
+  <arg name="robot_type"/>
+  
+  <param name="mass" value="$(arg mass)"/>
+
+  <node pkg="nodelet"
+    type="nodelet"
+    name="standalone_nodelet"
+    args="manager"
+    output="screen"/>
+
+  <node pkg="rotating_world" name="rotating_world" type="rotating_world" output="screen" >
+    <remap from="~odom_in" to="odom"/>
+    <remap from="~cmd_in" to="position_cmd"/>
+    <remap from="~odom_out" to="odom_static"/>
+    <remap from="~cmd_out" to="position_cmd_rotated"/>
+    <remap from="~turn_on" to="/rotate_on"/>
+
+    <rosparam file="$(arg config_path)/multi_mav_manager.yaml"/>
+  </node>
+
+  <node pkg="nodelet"
+    type="nodelet"
+    name="trackers_manager"
+    args="load trackers_manager/TrackersManager standalone_nodelet"
+    output="screen">
+    <rosparam file="$(find trackers_manager)/config/trackers.yaml"/>
+    <rosparam file="$(arg config_path)/tracker_params.yaml"/>
+    <rosparam file="$(arg config_path)/gains.yaml"/>
+    <remap from="~odom" to="odom_static"/>
+    <remap from="~cmd" to="position_cmd"/>
+  </node>
+
+  <node pkg="nodelet"
+    type="nodelet"
+    args="load so3_control/SO3ControlNodelet standalone_nodelet"
+    name="so3_control"
+    required="true"
+    output="screen">
+    <rosparam file="$(arg config_path)/gains.yaml"/>
+    <param name="corrections/kf" value="0.0" if="$(arg sim)"/>
+    <param name="mass" value="$(arg mass)"/>
+    <remap from="~odom" to="odom"/>
+    <!-- <remap from="~position_cmd" to="position_cmd"/> -->
+    <remap from="~position_cmd" to="position_cmd_rotated"/>
+    <remap from="~so3_cmd" to="so3_cmd"/>
+    <remap from="~motors" to="motors"/>
+  </node>
+
+  <include file="$(find quadrotor_simulator)/launch/quadrotor_simulator.launch" if="$(arg sim)">
+    <arg name="model" value="$(arg model)"/>
+    <arg name="robot_type" value="$(arg robot_type)"/>
+  </include>
+
+  <!-- We might want this to be conditional or only if sim -->
+  <node pkg="mesh_visualization"
+    type="mesh_visualization"
+    name="mesh_visualization"
+    output="screen">
+    <param name="mesh_resource" value="package://mesh_visualization/mesh/hummingbird.mesh"/>
+    <remap from="~input" to="odom"/>
+  </node>
+
+  <node pkg="mav_manager"
+    type="mav_services"
+    name="mav_services"
+    output="screen">
+  <rosparam file="$(arg config_path)/mav_manager.yaml"/>
+  </node>
+
+</launch>

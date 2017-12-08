@@ -1,0 +1,294 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded: ~
+      Splitter Ratio: 0.5
+    Tree Height: 362
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Tool Properties
+    Expanded:
+      - /2D Pose Estimate1
+      - /2D Nav Goal1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.588679
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: ""
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.03
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.03
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco01/mesh_visualization/robot
+      Name: loco01
+      Namespaces:
+        /loco01/mesh_visualization: true
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco01
+      Radius: 0.02
+      Reference Frame: loco01
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco02/mesh_visualization/robot
+      Name: loco02
+      Namespaces:
+        /loco02/mesh_visualization: true
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco02
+      Radius: 0.02
+      Reference Frame: loco02
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco03/mesh_visualization/robot
+      Name: loco03
+      Namespaces:
+        /loco03/mesh_visualization: true
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco03
+      Radius: 0.02
+      Reference Frame: loco03
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco04/mesh_visualization/robot
+      Name: loco04
+      Namespaces:
+        /loco04/mesh_visualization: true
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco04
+      Radius: 0.02
+      Reference Frame: loco04
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco05/mesh_visualization/robot
+      Name: loco05
+      Namespaces:
+        /loco05/mesh_visualization: true
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco05
+      Radius: 0.02
+      Reference Frame: loco05
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco00/mesh_visualization/robot
+      Name: loco00
+      Namespaces:
+        /loco00/mesh_visualization: true
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco00
+      Radius: 0.02
+      Reference Frame: loco00
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco07/mesh_visualization/robot
+      Name: loco07
+      Namespaces:
+        {}
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco07
+      Radius: 0.02
+      Reference Frame: loco07
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco08/mesh_visualization/robot
+      Name: loco08
+      Namespaces:
+        {}
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco08
+      Radius: 0.02
+      Reference Frame: loco08
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco09/mesh_visualization/robot
+      Name: loco09
+      Namespaces:
+        {}
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco09
+      Radius: 0.02
+      Reference Frame: loco09
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco10/mesh_visualization/robot
+      Name: loco10
+      Namespaces:
+        {}
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco10
+      Radius: 0.02
+      Reference Frame: loco10
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco11/mesh_visualization/robot
+      Name: loco11
+      Namespaces:
+        {}
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco11
+      Radius: 0.02
+      Reference Frame: loco11
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /loco12/mesh_visualization/robot
+      Name: loco12
+      Namespaces:
+        {}
+      Queue Size: 2
+      Value: true
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.35
+      Name: loco12
+      Radius: 0.02
+      Reference Frame: loco12
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: simulator
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+    - Class: rviz/FocusCamera
+    - Class: rviz/Measure
+    - Class: rviz/SetInitialPose
+      Topic: /initialpose
+    - Class: rviz/SetGoal
+      Topic: /move_base_simple/goal
+    - Class: rviz/PublishPoint
+      Single click: true
+      Topic: /clicked_point
+  Value: true
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 6.68457
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.06
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 0.0566381
+        Y: 0.507417
+        Z: -0.184682
+      Name: Current View
+      Near Clip Distance: 0.01
+      Pitch: 0.534795
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 4.12537
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 979
+  Hide Left Dock: true
+  Hide Right Dock: false
+  QMainWindow State: 000000ff00000000fd0000000400000000000001600000038dfc0200000008fb0000001200530065006c0065006300740069006f006e00000000280000009b0000005600fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730200000099000001070000028700000151fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000002c0000038d000000cc00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f0000036ffc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a0056006900650077007300000000280000036f000000a300fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000077000000044fc0100000002fb0000000800540069006d0065000000000000000770000001fb00fffffffb0000000800540069006d00650100000000000004500000000000000000000004fb0000038d00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1275
+  X: 1921
+  Y: 23

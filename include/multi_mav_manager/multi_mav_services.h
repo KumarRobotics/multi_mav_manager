@@ -37,7 +37,7 @@ class MMControl
     double duration_;
     ros::Time t_start_;
 
-    enum Shape {circle, rect, line, angle, grid3d};
+    enum Shape {circle, rect, line, angle, grid3d, triangle};
     Shape formation_shape_;
 
     // JT: I suspect that these could be floats
@@ -78,7 +78,9 @@ class MMControl
       srv_goFormLine_,
       srv_goFormRect_,
       srv_goFormGrid3d_,
-      srv_goFormAngle_;
+      srv_goFormAngle_,
+      srv_goFormTriangle_;
+
 
     bool motors_cb(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res);
     bool takeoff_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
@@ -93,6 +95,7 @@ class MMControl
     bool goFormCircle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
     bool goFormRect_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
     bool goFormGrid3d_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool goFormTriangle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
 
     void cleanFormation(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
     bool goForm(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);

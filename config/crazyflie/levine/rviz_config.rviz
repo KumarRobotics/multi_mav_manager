@@ -55,98 +55,98 @@ Visualization Manager:
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy01/mesh_visualization/robot
-      Name: crazy01
+      Marker Topic: /loco01/mesh_visualization/robot
+      Name: loco01
       Namespaces:
-        /crazy01/mesh_visualization: true
+        /loco01/mesh_visualization: true
       Queue Size: 2
       Value: true
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy01
+      Name: loco01
       Radius: 0.02
-      Reference Frame: crazy01
+      Reference Frame: loco01
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy02/mesh_visualization/robot
-      Name: crazy02
+      Marker Topic: /loco02/mesh_visualization/robot
+      Name: loco02
       Namespaces:
-        /crazy02/mesh_visualization: true
+        /loco02/mesh_visualization: true
       Queue Size: 2
       Value: true
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy02
+      Name: loco02
       Radius: 0.02
-      Reference Frame: crazy02
+      Reference Frame: loco02
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy03/mesh_visualization/robot
-      Name: crazy03
+      Marker Topic: /loco03/mesh_visualization/robot
+      Name: loco03
       Namespaces:
-        /crazy03/mesh_visualization: true
+        /loco03/mesh_visualization: true
       Queue Size: 2
       Value: true
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy03
+      Name: loco03
       Radius: 0.02
-      Reference Frame: crazy03
+      Reference Frame: loco03
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy04/mesh_visualization/robot
-      Name: crazy04
+      Marker Topic: /loco04/mesh_visualization/robot
+      Name: loco04
       Namespaces:
-        /crazy04/mesh_visualization: true
+        /loco04/mesh_visualization: true
       Queue Size: 2
       Value: true
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy04
+      Name: loco04
       Radius: 0.02
-      Reference Frame: crazy04
+      Reference Frame: loco04
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy05/mesh_visualization/robot
-      Name: crazy05
+      Marker Topic: /loco05/mesh_visualization/robot
+      Name: loco05
       Namespaces:
-        /crazy05/mesh_visualization: true
+        /loco05/mesh_visualization: true
       Queue Size: 2
       Value: true
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy05
+      Name: loco05
       Radius: 0.02
-      Reference Frame: crazy05
+      Reference Frame: loco05
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy06/mesh_visualization/robot
-      Name: crazy06
+      Marker Topic: /loco00/mesh_visualization/robot
+      Name: loco00
       Namespaces:
-        /crazy06/mesh_visualization: true
+        /loco00/mesh_visualization: true
       Queue Size: 2
       Value: true
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy06
+      Name: loco00
       Radius: 0.02
-      Reference Frame: crazy06
+      Reference Frame: loco00
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy07/mesh_visualization/robot
-      Name: crazy07
+      Marker Topic: /loco07/mesh_visualization/robot
+      Name: loco07
       Namespaces:
         {}
       Queue Size: 2
@@ -154,14 +154,14 @@ Visualization Manager:
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy07
+      Name: loco07
       Radius: 0.02
-      Reference Frame: crazy07
+      Reference Frame: loco07
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy08/mesh_visualization/robot
-      Name: crazy08
+      Marker Topic: /loco08/mesh_visualization/robot
+      Name: loco08
       Namespaces:
         {}
       Queue Size: 2
@@ -169,14 +169,14 @@ Visualization Manager:
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy08
+      Name: loco08
       Radius: 0.02
-      Reference Frame: crazy08
+      Reference Frame: loco08
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy09/mesh_visualization/robot
-      Name: crazy09
+      Marker Topic: /loco09/mesh_visualization/robot
+      Name: loco09
       Namespaces:
         {}
       Queue Size: 2
@@ -184,14 +184,14 @@ Visualization Manager:
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy09
+      Name: loco09
       Radius: 0.02
-      Reference Frame: crazy09
+      Reference Frame: loco09
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy10/mesh_visualization/robot
-      Name: crazy10
+      Marker Topic: /loco10/mesh_visualization/robot
+      Name: loco10
       Namespaces:
         {}
       Queue Size: 2
@@ -199,14 +199,14 @@ Visualization Manager:
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy10
+      Name: loco10
       Radius: 0.02
-      Reference Frame: crazy10
+      Reference Frame: loco10
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy11/mesh_visualization/robot
-      Name: crazy11
+      Marker Topic: /loco11/mesh_visualization/robot
+      Name: loco11
       Namespaces:
         {}
       Queue Size: 2
@@ -214,14 +214,14 @@ Visualization Manager:
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy11
+      Name: loco11
       Radius: 0.02
-      Reference Frame: crazy11
+      Reference Frame: loco11
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /crazy12/mesh_visualization/robot
-      Name: crazy12
+      Marker Topic: /loco12/mesh_visualization/robot
+      Name: loco12
       Namespaces:
         {}
       Queue Size: 2
@@ -229,9 +229,9 @@ Visualization Manager:
     - Class: rviz/Axes
       Enabled: true
       Length: 0.35
-      Name: crazy12
+      Name: loco12
       Radius: 0.02
-      Reference Frame: crazy12
+      Reference Frame: loco12
       Value: true
   Enabled: true
   Global Options:

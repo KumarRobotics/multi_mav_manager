@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Don't forget to source the setup.bash file.
-source ~/programs/ros/ws_multi_crazyflie_rotate_demo/src/multi_mav_manager/scripts/aliases.sh
+source ~/programs/ros/crazyflie_ws/src/multi_mav_manager/scripts/aliases.sh
 
 # This script assumes that you have launched:
 #   roslaunch multi_mav_manager multi_crazyflie.launch sim:=0

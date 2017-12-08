@@ -43,7 +43,6 @@ bool MMControl::goFormRawPos_cb(multi_mav_manager::RawPosFormation::Request &req
     formation_offsets_[i][0] = req.goals[i].x;
     formation_offsets_[i][1] = req.goals[i].y;
     formation_offsets_[i][2] = req.goals[i].z;
-    formation_offsets_[i][3] = req.goals[i].yaw;
   }
 
   multi_mav_manager::Formation::Request form_req;
@@ -67,6 +66,33 @@ bool MMControl::goFormLine_cb(multi_mav_manager::Formation::Request &req, multi_
     formation_offsets_[i][2] = 0.0;
   }
 
+  return goForm(req, res);
+}
+
+bool MMControl::goFormTriangle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res)
+{
+  formation_shape_ = triangle;
+  cleanFormation(req, res);
+
+  double R = req.spacing;
+  double th = M_PI / 3.0;
+
+  if(num_active_bots == 6){
+    formation_offsets_[0][0] = R *  1.0 * std::sin(th); formation_offsets_[0][1] = 0.0;                     formation_offsets_[0][2] = 0.0;
+    formation_offsets_[1][0] = R * -1.0 * std::sin(th); formation_offsets_[1][1] = 0.0;                     formation_offsets_[1][2] = 0.0;
+    formation_offsets_[2][0] =                     0.0; formation_offsets_[2][1] = R *  1.0 * std::cos(th); formation_offsets_[2][2] = 0.0;
+    formation_offsets_[3][0] =                     0.0; formation_offsets_[3][1] = R * -1.0 * std::cos(th); formation_offsets_[3][2] = 0.0;
+    formation_offsets_[4][0] = R * -1.0 * std::sin(th); formation_offsets_[4][1] = R *  2.0 * std::cos(th); formation_offsets_[4][2] = 0.0;
+    formation_offsets_[5][0] = R * -1.0 * std::sin(th); formation_offsets_[5][1] = R * -2.0 * std::cos(th); formation_offsets_[5][2] = 0.0;
+
+    // for(int i = 0; i <=5; i++){
+    //   ROS_INFO_STREAM("point " << i << " (" << formation_offsets_[i][0] << ", "<< formation_offsets_[i][1] << ", "<< formation_offsets_[i][2] << ")");
+    // }
+
+  } else {
+    res.success = false;
+    res.message = "Triangle only defined for 6 robots right now";
+  }
   return goForm(req, res);
 }
 
@@ -433,7 +459,7 @@ bool MMControl::loop(typename T::Request &req, typename T::Response &res, ros::S
   for(unsigned int i = 0; i < active_robots_.size(); i++)
   {
     ros::ServiceClient service = (*active_robots_[i]).*sc;
-    ros::Duration(0.1).sleep();
+    ros::Duration(0.01).sleep();
     if (!service.call(srv))
     {
       res.success = false;
@@ -504,6 +530,7 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
   srv_goFormRect_             = nh.advertiseService("goFormRect", &MMControl::goFormRect_cb, this);
   srv_goFormGrid3d_           = nh.advertiseService("goFormGrid3d", &MMControl::goFormGrid3d_cb, this);
   srv_goFormAngle_            = nh.advertiseService("goFormAngle", &MMControl::goFormAngle_cb, this);
+  srv_goFormTriangle_         = nh.advertiseService("goFormTriangle", &MMControl::goFormTriangle_cb, this);
 
   std::cout << "================== Multi Mav Manager is ready for action ==================" << std::endl;
 }

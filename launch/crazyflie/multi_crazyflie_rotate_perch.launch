@@ -1,0 +1,147 @@
+<launch>
+
+  <arg name="sim" default="0"/>
+  <arg name="perch" default="1"/>
+
+  <arg name="config_path" value="$(find multi_mav_manager)/config/crazyflie/perch"/>
+  <group unless="$(arg perch)">
+    <arg name="config_path" value="$(find multi_mav_manager)/config/crazyflie/levine"/>
+  </group>
+
+  <arg name="launch_path" value="$(find multi_mav_manager)/launch/crazyflie"/>
+
+  <include file="$(find crazyflie_driver)/launch/crazyflie_server.launch" unless="$(arg sim)"/>
+
+  <group if="$(arg sim)">
+    <rosparam file="$(arg config_path)/sim_params.yaml"/>
+  </group>
+
+  <node pkg="multi_mav_manager"
+      type="multi_mav_services"
+      name="multi_mav_services"
+      output="screen">
+
+    <!-- perch or levine -->
+    <rosparam file="$(arg config_path)/multi_mav_manager.yaml"/>
+
+  </node>
+
+    <node pkg="mocap_vicon"
+      type="mocap_vicon_node"
+      name="vicon"
+      output="screen"
+      unless="$(arg sim)">
+      <param name="server_address" value="mocap"/>
+      <param name="frame_rate" value="100"/>
+      <param name="max_accel" value="10.0"/>
+      <param name="publish_tf" value="false"/>
+      <param name="fixed_frame_id" value="mocap"/>
+      <rosparam param="model_list">[]</rosparam>
+      <remap from="vicon/loco00/odom" to="/loco00/odom"/>
+      <remap from="vicon/loco01/odom" to="/loco01/odom"/>
+      <remap from="vicon/loco02/odom" to="/loco02/odom"/>
+      <remap from="vicon/loco03/odom" to="/loco03/odom"/>
+      <remap from="vicon/loco04/odom" to="/loco04/odom"/>
+      <remap from="vicon/loco05/odom" to="/loco05/odom"/>
+    </node>
+
+    <include file="$(arg launch_path)/crazyflie_rotate.launch">
+      <arg name="model"       value="loco00"/>
+      <arg name="sim"         value="$(arg sim)"/>
+      <arg name="config_path" value="$(arg config_path)"/>
+      <arg name="launch_path" value="$(arg launch_path)"/>
+      <arg name="uri"         value="radio://0/60/2M/0xE7E7E7E700"/>
+    </include>
+
+    <include file="$(arg launch_path)/crazyflie_rotate.launch">
+      <arg name="model"       value="loco01"/>
+      <arg name="sim"         value="$(arg sim)"/>
+      <arg name="config_path" value="$(arg config_path)"/>
+      <arg name="launch_path" value="$(arg launch_path)"/>
+      <arg name="uri"         value="radio://0/60/2M/0xE7E7E7E701"/>
+    </include>
+
+    <include file="$(arg launch_path)/crazyflie_rotate.launch">
+      <arg name="model"       value="loco02"/>
+      <arg name="sim"         value="$(arg sim)"/>
+      <arg name="config_path" value="$(arg config_path)"/>
+      <arg name="launch_path" value="$(arg launch_path)"/>
+      <arg name="uri"         value="radio://0/60/2M/0xE7E7E7E702"/>
+    </include>
+
+    <include file="$(arg launch_path)/crazyflie_rotate.launch">
+      <arg name="model"       value="loco03"/>
+      <arg name="sim"         value="$(arg sim)"/>
+      <arg name="config_path" value="$(arg config_path)"/>
+      <arg name="launch_path" value="$(arg launch_path)"/>
+      <arg name="uri"         value="radio://1/80/2M/0xE7E7E7E703"/>
+    </include>
+
+    <include file="$(arg launch_path)/crazyflie_rotate.launch">
+      <arg name="model"       value="loco04"/>
+      <arg name="sim"         value="$(arg sim)"/>
+      <arg name="config_path" value="$(arg config_path)"/>
+      <arg name="launch_path" value="$(arg launch_path)"/>
+      <arg name="uri"         value="radio://1/80/2M/0xE7E7E7E704"/>
+    </include>
+
+    <include file="$(arg launch_path)/crazyflie_rotate.launch">
+      <arg name="model"       value="loco05"/>
+      <arg name="sim"         value="$(arg sim)"/>
+      <arg name="config_path" value="$(arg config_path)"/>
+      <arg name="launch_path" value="$(arg launch_path)"/>
+      <arg name="uri"         value="radio://1/80/2M/0xE7E7E7E705"/>
+    </include>
+
+    
+<!--
+  <node pkg="rosbag"
+    type="record"
+    name="recorder"
+    args="/loco00/odom
+    /loco01/odom
+    /loco02/odom
+    /loco03/odom
+    /loco04/odom
+    /loco05/odom
+    /loco06/position_cmd
+    /loco01/position_cmd
+    /loco02/position_cmd
+    /loco03/position_cmd
+    /loco04/position_cmd
+    /loco05/position_cmd
+    /loco00/so3_cmd
+    /loco01/so3_cmd
+    /loco02/so3_cmd
+    /loco03/so3_cmd
+    /loco04/so3_cmd
+    /loco05/so3_cmd
+    /loco06/cmd_vel
+    /loco01/cmd_vel
+    /loco02/cmd_vel
+    /loco03/cmd_vel
+    /loco04/cmd_vel
+    /loco05/cmd_vel
+    /loco06/cmd_vel_fast
+    /loco01/cmd_vel_fast
+    /loco02/cmd_vel_fast
+    /loco03/cmd_vel_fast
+    /loco04/cmd_vel_fast
+    /loco05/cmd_vel_fast
+    /loco00/trackers_manager/line_tracker_min_jerk/goal_timed
+    /loco01/trackers_manager/line_tracker_min_jerk/goal_timed
+    /loco02/trackers_manager/line_tracker_min_jerk/goal_timed
+    /loco03/trackers_manager/line_tracker_min_jerk/goal_timed
+    /loco04/trackers_manager/line_tracker_min_jerk/goal_timed
+    /loco05/trackers_manager/line_tracker_min_jerk/goal_timed
+    /loco06/trackers_manager/line_tracker_distance/goal
+    /loco01/trackers_manager/line_tracker_distance/goal
+    /loco02/trackers_manager/line_tracker_distance/goal
+    /loco03/trackers_manager/line_tracker_distance/goal
+    /loco04/trackers_manager/line_tracker_distance/goal
+    /loco05/trackers_manager/line_tracker_distance/goal
+    -o multi_crazyflie"
+    output="screen"/>
+-->
+
+</launch>

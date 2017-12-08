@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
       Splitter Ratio: 0.5
-    Tree Height: 645
+    Tree Height: 766
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -15,7 +15,7 @@ Panels:
       - /2D Nav Goal1
       - /Publish Point1
     Name: Tool Properties
-    Splitter Ratio: 0.588679
+    Splitter Ratio: 0.588679016
   - Class: rviz/Views
     Expanded:
       - /Current View1
@@ -35,7 +35,7 @@ Visualization Manager:
       Color: 160; 160; 164
       Enabled: true
       Line Style:
-        Line Width: 0.03
+        Line Width: 0.0299999993
         Value: Lines
       Name: Grid
       Normal Cell Count: 0
@@ -51,7 +51,7 @@ Visualization Manager:
       Enabled: true
       Length: 1
       Name: Axes
-      Radius: 0.03
+      Radius: 0.0299999993
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/Marker
@@ -64,9 +64,9 @@ Visualization Manager:
       Value: true
     - Class: rviz/Axes
       Enabled: true
-      Length: 0.35
+      Length: 0.349999994
       Name: QuadrotorTango
-      Radius: 0.02
+      Radius: 0.0199999996
       Reference Frame: QuadrotorTango
       Value: true
     - Class: rviz/Marker
@@ -79,9 +79,9 @@ Visualization Manager:
       Value: true
     - Class: rviz/Axes
       Enabled: true
-      Length: 0.35
+      Length: 0.349999994
       Name: QuadrotorUniform
-      Radius: 0.02
+      Radius: 0.0199999996
       Reference Frame: QuadrotorUniform
       Value: true
     - Class: rviz/Marker
@@ -94,9 +94,9 @@ Visualization Manager:
       Value: true
     - Class: rviz/Axes
       Enabled: true
-      Length: 0.35
+      Length: 0.349999994
       Name: QuadrotorVictor
-      Radius: 0.02
+      Radius: 0.0199999996
       Reference Frame: QuadrotorVictor
       Value: true
     - Class: rviz/Marker
@@ -109,9 +109,9 @@ Visualization Manager:
       Value: true
     - Class: rviz/Axes
       Enabled: true
-      Length: 0.35
+      Length: 0.349999994
       Name: QuadrotorWhiskey
-      Radius: 0.02
+      Radius: 0.0199999996
       Reference Frame: QuadrotorWhiskey
       Value: true
     - Class: rviz/Marker
@@ -124,10 +124,180 @@ Visualization Manager:
       Value: true
     - Class: rviz/Axes
       Enabled: true
-      Length: 0.35
+      Length: 0.349999994
       Name: QuadrotorXray
-      Radius: 0.02
+      Radius: 0.0199999996
       Reference Frame: QuadrotorXray
+      Value: true
+    - Angle Tolerance: 0.100000001
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.300000012
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 1
+      Name: Odometry
+      Position Tolerance: 0.100000001
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.100000001
+        Color: 255; 25; 0
+        Head Length: 0.300000012
+        Head Radius: 0.100000001
+        Shaft Length: 1
+        Shaft Radius: 0.0500000007
+        Value: Axes
+      Topic: /QuadrotorTango/odom_static
+      Unreliable: false
+      Value: true
+    - Angle Tolerance: 0.100000001
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.300000012
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 1
+      Name: Odometry
+      Position Tolerance: 0.100000001
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.100000001
+        Color: 255; 25; 0
+        Head Length: 0.300000012
+        Head Radius: 0.100000001
+        Shaft Length: 1
+        Shaft Radius: 0.0500000007
+        Value: Axes
+      Topic: /QuadrotorUniform/odom_static
+      Unreliable: false
+      Value: true
+    - Angle Tolerance: 0.100000001
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.300000012
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 1
+      Name: Odometry
+      Position Tolerance: 0.100000001
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.100000001
+        Color: 255; 25; 0
+        Head Length: 0.300000012
+        Head Radius: 0.100000001
+        Shaft Length: 1
+        Shaft Radius: 0.0500000007
+        Value: Axes
+      Topic: /QuadrotorVictor/odom_static
+      Unreliable: false
+      Value: true
+    - Angle Tolerance: 0.100000001
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.300000012
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 1
+      Name: Odometry
+      Position Tolerance: 0.100000001
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.100000001
+        Color: 255; 25; 0
+        Head Length: 0.300000012
+        Head Radius: 0.100000001
+        Shaft Length: 1
+        Shaft Radius: 0.0500000007
+        Value: Axes
+      Topic: /QuadrotorWhiskey/odom_static
+      Unreliable: false
+      Value: true
+    - Angle Tolerance: 0.100000001
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.300000012
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 1
+      Name: Odometry
+      Position Tolerance: 0.100000001
+      Shape:
+        Alpha: 1
+        Axes Length: 1
+        Axes Radius: 0.100000001
+        Color: 255; 25; 0
+        Head Length: 0.300000012
+        Head Radius: 0.100000001
+        Shaft Length: 1
+        Shaft Radius: 0.0500000007
+        Value: Axes
+      Topic: /QuadrotorXray/odom_static
+      Unreliable: false
       Value: true
   Enabled: true
   Global Options:
@@ -153,22 +323,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 8.3588
+      Distance: 16.5766354
       Enable Stereo Rendering:
-        Stereo Eye Separation: 0.06
+        Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.473996
-        Y: 0.496539
-        Z: 0.602707
+        X: 0.473996013
+        Y: 0.496538997
+        Z: 0.602707028
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.0500000007
+      Invert Z Axis: false
       Name: Current View
-      Near Clip Distance: 0.01
-      Pitch: 0.329795
+      Near Clip Distance: 0.00999999978
+      Pitch: 0.134796962
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.93037
+      Yaw: 4.39037085
     Saved: ~
 Window Geometry:
   Displays:
@@ -176,7 +349,7 @@ Window Geometry:
   Height: 979
   Hide Left Dock: true
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001a600000312fc0200000008fb000000100044006900730070006c006100790073000000002c00000312000000dc00fffffffb0000001200530065006c0065006300740069006f006e00000000280000009b0000005600fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730200000099000001070000028700000151fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f0000036ffc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a0056006900650077007300000000280000036f000000a300fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000049b000000dcfc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000077000000044fc0100000002fb0000000800540069006d0065000000000000000770000001fb00fffffffb0000000800540069006d00650100000000000004500000000000000000000004fc0000038d00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001a60000038dfc0200000008fb000000100044006900730070006c00610079007300000000280000038d000000dd00fffffffb0000001200530065006c0065006300740069006f006e00000000280000009b0000006400fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730200000099000001070000028700000151fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f0000036ffc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a0056006900650077007300000000280000036f000000b000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000049b000000dcfc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000077000000044fc0100000002fb0000000800540069006d00650000000000000007700000030000fffffffb0000000800540069006d00650100000000000004500000000000000000000004fc0000038d00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -187,4 +360,4 @@ Window Geometry:
     collapsed: false
   Width: 1276
   X: 1920
-  Y: 23
+  Y: 24

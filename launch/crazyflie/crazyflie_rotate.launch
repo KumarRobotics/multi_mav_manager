@@ -3,15 +3,17 @@
   <arg name="model"/>
   <arg name="sim" default="1"/>
   <arg name="config_path"/>
+  <arg name="launch_path"/>
+  <arg name="location"/>
   <arg name="uri" default="radio://0/100/2M/0xE7E7E7E7E7" />
-  <arg name="cmd_frequency" default="30" />
+  <arg name="cmd_frequency" default="25" />
 
   <!-- Add odometry node -->
   <group ns="$(arg model)">
 
     <arg name="mass" value="0.029"/>
 
-    <include file="$(find multi_mav_manager)/launch/robot_common.launch">
+    <include file="$(arg launch_path)/../robot_common_rotate.launch">
       <arg name="config_path" value="$(arg config_path)"/>
       <arg name="mass"        value="$(arg mass)"       />
       <arg name="sim"         value="$(arg sim)"        />
