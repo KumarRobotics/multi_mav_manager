@@ -3,10 +3,8 @@
   <arg name="sim" default="0"/>
   <arg name="perch" default="1"/>
 
-  <arg name="config_path" value="$(find multi_mav_manager)/config/crazyflie/perch"/>
-  <group unless="$(arg perch)">
-    <arg name="config_path" value="$(find multi_mav_manager)/config/crazyflie/levine"/>
-  </group>
+  <arg name="config_path" value="$(find multi_mav_manager)/config/crazyflie/perch" if="$(arg perch)"/>
+  <arg name="config_path" value="$(find multi_mav_manager)/config/crazyflie/levine" unless="$(arg perch)"/>
 
   <arg name="launch_path" value="$(find multi_mav_manager)/launch/crazyflie"/>
 
