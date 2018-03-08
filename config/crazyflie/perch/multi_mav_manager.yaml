@@ -9,12 +9,12 @@ model_names: [
 robot_radius: 0.1
 battery_low: 3.50
 
-/loco00/active: 1
-/loco01/active: 1
-/loco02/active: 1
-/loco03/active: 1
-/loco04/active: 1
-/loco05/active: 0
+/loco00/active: true
+/loco01/active: true
+/loco02/active: true
+/loco03/active: true
+/loco04/active: true
+/loco05/active: false
 
 max_vel: 2.0
 max_acc: 0.8

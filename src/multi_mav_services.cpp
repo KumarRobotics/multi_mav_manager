@@ -1,5 +1,6 @@
-#include <hungarian.h>
 #include <multi_mav_manager/multi_mav_services.h>
+
+#include <hungarian.h>
 
 bool MMControl::motors_cb(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
   return loop<std_srvs::SetBool>(req, res, &MavManagerInterface::sc_motors, "motors");
@@ -285,7 +286,8 @@ bool MMControl::goForm(multi_mav_manager::Formation::Request &req, multi_mav_man
 
   ROS_INFO("CAPT...");
   createDistMatrix();     // Calculated the distance matrix used by capt
-  Hungarian h(assignment_matrix_, &capt_cost_, distMatrixSquared_, num_active_bots, goals_.size()); // Create hungarian object for capt
+  Hungarian h(assignment_matrix_.data(), &capt_cost_, distMatrixSquared_.data(),
+              num_active_bots, goals_.size()); // Create hungarian object for capt
   h.computeAssignment();  // Use capt to find assignments
   calculateDuration();    // Determine temporal scaling based on max dist
 
@@ -342,7 +344,7 @@ void MMControl::calculateDuration(){
 
   max_dist_ = 0.0;
   double dist_i = 0.0;
-  
+
   auto positions = activeRobotPositions();
 
   for(int rob_i=0; rob_i<num_active_bots; rob_i++){
@@ -372,28 +374,15 @@ void MMControl::calculateGoals(){
 
   // Define Rotation Matrices based on a yaw-pitch-roll euler angle rotation
   // Order is ZYX, yaw*pitch*roll
-
-  Eigen::Matrix3f R_yaw;
-  Eigen::Matrix3f R_pitch;
-  Eigen::Matrix3f R_roll;
-
-  R_yaw <<    std::cos(formation_yaw_),   std::sin(formation_yaw_), 0,
-        -std::sin(formation_yaw_),  std::cos(formation_yaw_), 0,
-        0,                          0,                        1;
-
-  R_pitch <<  std::cos(formation_pitch_),   0,  -std::sin(formation_pitch_),
-          0,                            1,  0,
-          std::sin(formation_pitch_),   0,  std::cos(formation_pitch_);
-
-  R_roll <<   1,  0,                            0,
-         0,  std::cos(formation_roll_),   -std::sin(formation_roll_),
-         0,  std::sin(formation_roll_),   std::cos(formation_roll_);
+  const auto R = Eigen::AngleAxisf(formation_yaw_, Eigen::Vector3f::UnitZ()) *
+                 Eigen::AngleAxisf(formation_pitch_, Eigen::Vector3f::UnitY()) *
+                 Eigen::AngleAxisf(formation_roll_, Eigen::Vector3f::UnitX());
 
   // JT: Make sure goals_ is the correct size
   goals_.resize(num_active_bots);
-  for(int goal_i=0; goal_i<goals_.size(); goal_i++) {
+  for(size_t goal_i=0; goal_i<goals_.size(); goal_i++) {
 
-    formation_offsets_[goal_i] = R_yaw * R_pitch * R_roll * formation_offsets_[goal_i];
+    formation_offsets_[goal_i] =  R * formation_offsets_[goal_i];
 
     for(int dim_i=0; dim_i<3; dim_i++) {
       goals_[goal_i](dim_i) =
@@ -401,7 +390,7 @@ void MMControl::calculateGoals(){
     }
 
     if(goals_[goal_i](2) < 0.0f) {
-      ROS_INFO("Goal %d was too low at %2.2f so I set it to 0", goal_i, goals_[goal_i](2));
+      ROS_INFO("Goal %zu was too low at %2.2f so I set it to 0", goal_i, goals_[goal_i](2));
       goals_[goal_i](2) = 0.0f;   // Protect against robots crashing into the ground
       // TODO make minimum height a param
       // TODO make the boundaries of the space a param
@@ -410,16 +399,16 @@ void MMControl::calculateGoals(){
 }
 
 void MMControl::createDistMatrix(){
-  
+
   std::vector<Eigen::Vector3f> positions = activeRobotPositions();
 
   capt_cost_ = 0;
-  int num_goals = goals_.size();
+  size_t num_goals = goals_.size();
 
-  distMatrixSquared_ = new double[num_active_bots * num_goals];
+  distMatrixSquared_ = std::vector<double>(num_active_bots * num_goals);
 
-  for(int robot_i = 0; robot_i < positions.size(); robot_i++){
-    for(int goal_i = 0; goal_i < num_goals; goal_i++){
+  for(size_t robot_i = 0; robot_i < positions.size(); robot_i++){
+    for(size_t goal_i = 0; goal_i < num_goals; goal_i++){
 
       int q = (goal_i*num_goals) + robot_i;
       distMatrixSquared_[q] =
@@ -448,7 +437,8 @@ bool MMControl::estop_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Res
 }
 
 template <typename T>
-bool MMControl::loop(typename T::Request &req, typename T::Response &res, ros::ServiceClient MavManagerInterface::*sc, std::string str)
+bool MMControl::loop(const typename T::Request &req, typename T::Response &res,
+                     ros::ServiceClient MavManagerInterface::*sc, const std::string str)
 {
   checkActiveRobots();
   T srv;
@@ -458,19 +448,21 @@ bool MMControl::loop(typename T::Request &req, typename T::Response &res, ros::S
 
   for(unsigned int i = 0; i < active_robots_.size(); i++)
   {
-    ros::ServiceClient service = (*active_robots_[i]).*sc;
-    ros::Duration(0.01).sleep();
+    // For the weird construction below, see https://stackoverflow.com/q/670734
+    // and https://stackoverflow.com/a/21603687
+    ros::ServiceClient &service = (*active_robots_[i]).*sc;
     if (!service.call(srv))
     {
       res.success = false;
-      res.message = res.message + "\n\t" + (*active_robots_[i]).model_name_ + " failed to call " + str + ".\n" +
+      res.message = res.message + "\n\t" + active_robots_[i]->model_name_ + " failed to call " + str + ".\n" +
         "on service " + service.getService() + "\n";
     }
     else
     {
-      res.success = res.success & srv.response.success;
-      res.message = res.message + "\n\tResponse from " + (*active_robots_[i]).model_name_ + ": " + srv.response.message;
+      res.success = res.success && srv.response.success;
+      res.message = res.message + "\n\tResponse from " + active_robots_[i]->model_name_ + ": " + srv.response.message;
     }
+    ros::Duration(0.01).sleep();
   }
   res.message = res.message + "\n";
   return true;
@@ -493,8 +485,8 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
 
   std::cout << "Constructing multi_mav_control with " << num_total_bots << " indexed bots" << std::endl;
 
-  assignment_matrix_ = new int[num_total_bots];
-  int act = 0;
+  assignment_matrix_ = std::vector<int>(num_total_bots);
+  bool act = false;
 
   for(int i = 0; i < num_total_bots; i++)
   {
@@ -502,9 +494,8 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
 
     float battery_low = 4;
     nh.getParam("battery_low", battery_low);
-    std::string str(model_names_[i]);
 
-    std::shared_ptr<MavManagerInterface> mmi = std::make_shared<MavManagerInterface>((std::string)model_names_[i], (bool)act, battery_low, this);
+    auto mmi = std::make_shared<MavManagerInterface>(model_names_[i], act, battery_low, this);
 
     robots_.push_back(mmi);
     //if(act)   active_robots_.push_back(mmi);  // Add to active robots list

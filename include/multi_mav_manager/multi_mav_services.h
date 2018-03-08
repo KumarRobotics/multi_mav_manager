@@ -1,12 +1,19 @@
 #ifndef MULTI_MAV_SERVICES_H
 #define MULTI_MAV_SERVICES_H
 
+#include <string>
+#include <Eigen/Core>
+
 #include <ros/ros.h>
+
 #include <mav_manager/mav_manager_services.h>
 #include <multi_mav_manager/Formation.h>
 #include <multi_mav_manager/RawPosFormation.h>
-#include <std_msgs/Float32.h>
 #include <multi_mav_manager/mav_manager_interface.h>
+#include <nav_msgs/Odometry.h>
+#include <std_msgs/Float32.h>
+#include <std_srvs/SetBool.h>
+#include <std_srvs/Trigger.h>
 
 class MMControl
 {
@@ -14,9 +21,39 @@ class MMControl
     MMControl();
     void checkActiveRobots();
 
-  protected:
-
   private:
+    bool motors_cb(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res);
+    bool takeoff_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+
+    bool goHome_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+    bool goTo_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool goToTimed_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+
+    bool goFormRawPos_cb(multi_mav_manager::RawPosFormation::Request &req, multi_mav_manager::RawPosFormation::Response &res);
+    bool goFormLine_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool goFormAngle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool goFormCircle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool goFormRect_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool goFormGrid3d_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool goFormTriangle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+
+    void cleanFormation(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool goForm(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
+    bool checkCapt(multi_mav_manager::Formation::Response &res);
+    void calculateDuration();
+    void calculateGoals();
+    void createDistMatrix();
+
+    bool setDesVelInWorldFrame_cb(mav_manager::Vec4::Request &req, mav_manager::Vec4::Response &res);
+    bool hover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+    bool ehover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+    bool land_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+    bool eland_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+    bool estop_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+
+    template <typename T>
+      bool loop(const typename T::Request &req, typename T::Response &res,
+                ros::ServiceClient MavManagerInterface::*sc, const std::string str);
 
     std::vector<std::shared_ptr<MavManagerInterface> > robots_;
     std::vector<std::shared_ptr<MavManagerInterface> > active_robots_;
@@ -30,9 +67,9 @@ class MMControl
 
     std::vector<Eigen::Vector3f> activeRobotPositions();
     std::vector<Eigen::Vector3f> goals_;
-    int * assignment_matrix_;
+    std::vector<int> assignment_matrix_;
     double capt_cost_;
-    double * distMatrixSquared_;
+    std::vector<double> distMatrixSquared_;
     double max_dist_;
     double duration_;
     ros::Time t_start_;
@@ -81,38 +118,6 @@ class MMControl
       srv_goFormAngle_,
       srv_goFormTriangle_;
 
-
-    bool motors_cb(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res);
-    bool takeoff_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-
-    bool goHome_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-    bool goTo_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-    bool goToTimed_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-
-    bool goFormRawPos_cb(multi_mav_manager::RawPosFormation::Request &req, multi_mav_manager::RawPosFormation::Response &res);
-    bool goFormLine_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-    bool goFormAngle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-    bool goFormCircle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-    bool goFormRect_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-    bool goFormGrid3d_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-    bool goFormTriangle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-
-    void cleanFormation(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-    bool goForm(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
-    bool checkCapt(multi_mav_manager::Formation::Response &res);
-    void calculateDuration();
-    void calculateGoals();
-    void createDistMatrix();
-
-    bool setDesVelInWorldFrame_cb(mav_manager::Vec4::Request &req, mav_manager::Vec4::Response &res);
-    bool hover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-    bool ehover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-    bool land_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-    bool eland_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-    bool estop_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-
-    template <typename T>
-      bool loop(typename T::Request &req, typename T::Response &res, ros::ServiceClient MavManagerInterface::*sc, std::string str);
 };
 
 #endif

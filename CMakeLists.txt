@@ -41,8 +41,8 @@ generate_messages(
 )
 
 catkin_package(
-  INCLUDE_DIRS 
-    include 
+  INCLUDE_DIRS
+    include
     include/capt/hungarian
   LIBRARIES mav_manager
   CATKIN_DEPENDS
@@ -55,7 +55,7 @@ catkin_package(
     std_msgs
     std_srvs
     message_runtime
-  DEPENDS Eigen3)
+  DEPENDS EIGEN3)
 
 add_library(capt include/capt/hungarian/hungarian.cpp)
 

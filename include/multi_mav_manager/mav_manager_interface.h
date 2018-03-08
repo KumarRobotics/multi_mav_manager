@@ -1,43 +1,25 @@
 #ifndef MAV_MANAGER_INTERFACE_H
 #define MAV_MANAGER_INTERFACE_H
 
+#include <Eigen/Core>
 #include <string>
+
 #include <ros/ros.h>
-#include <mav_manager/mav_manager_services.h>
-#include <std_msgs/Float32.h>
+
 #include <nav_msgs/Odometry.h>
-// #include <multi_mav_manager/mav_manager_interface.h>
-// #include <std_srvs/Trigger.h>
-// #include <std_srvs/SetBool.h>
+#include <std_msgs/Float32.h>
+#include <std_srvs/Trigger.h>
 
 class MMControl;
 
 class MavManagerInterface
 {
-  private:
-
-    bool active_;
-    float battery_;
-    float battery_low_;
-    MMControl* mmc_;
-
-
-    ros::NodeHandle nh, priv_nh; // TODO: do I need this here?
-
-    void odom_cb(const nav_msgs::Odometry::ConstPtr &msg);
-    void battery_cb(const std_msgs::Float32 &msg);
-
-    bool deactivate_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-    bool activate_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
-
-    void deactivate();
-
   public:
- 
     MavManagerInterface(std::string model_name, bool active, float battery_low, MMControl* mmc);
 
-    std::string model_name_;
     bool isActive() { return active_; }
+
+    std::string model_name_;
 
     // JT: I think these should be private members with public accessors
     nav_msgs::Odometry odom_;
@@ -66,6 +48,22 @@ class MavManagerInterface
     ros::Subscriber
       odom_sub,
       battery_sub;
+
+  private:
+    void odom_cb(const nav_msgs::Odometry::ConstPtr &msg);
+    void battery_cb(const std_msgs::Float32 &msg);
+
+    bool deactivate_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+    bool activate_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
+
+    void deactivate();
+
+    bool active_;
+    float battery_;
+    float battery_low_;
+    MMControl* mmc_;
+
+    ros::NodeHandle nh; // TODO: do I need this here?
 };
 
 #endif

@@ -13,11 +13,11 @@ model_names: [
 robot_radius: 0.35
 battery_low: 9.2
 
-/QuadrotorTango/active: 1
-/QuadrotorUniform/active: 1
-/QuadrotorVictor/active: 1
-/QuadrotorWhiskey/active: 1
-/QuadrotorXray/active: 1
+/QuadrotorTango/active: true
+/QuadrotorUniform/active: true
+/QuadrotorVictor/active: true
+/QuadrotorWhiskey/active: true
+/QuadrotorXray/active: true
 
 max_vel: 5.0
 max_acc: 4.0

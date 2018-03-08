@@ -1,14 +1,17 @@
 #include <multi_mav_manager/mav_manager_interface.h>
 
+#include <mav_manager/GoalTimed.h>
+#include <mav_manager/Vec4.h>
+#include <std_srvs/SetBool.h>
+
 class MMcontrol;
 
 MavManagerInterface::MavManagerInterface(std::string model_name, bool active, float battery_low, MMControl* mmc)
-  : active_(active)
+  : model_name_(model_name)
+  , active_(active)
   , battery_low_(battery_low)
   , mmc_(mmc)
   , nh("multi_mav_services")
-  , priv_nh("")
-  , model_name_(model_name)
 {
   //std::cout << "Creating Mav Manager Interface object for " << model_name_ << std::endl;
 
@@ -19,17 +22,18 @@ MavManagerInterface::MavManagerInterface(std::string model_name, bool active, fl
 
   //std::cout << "\tBattery low voltage is " << battery_low_ << std::endl;
 
-  sc_motors = nh.serviceClient<std_srvs::SetBool>(               "/" + model_name_ + "/mav_services/motors");
-  sc_takeoff = nh.serviceClient<std_srvs::Trigger>(           "/" + model_name_ + "/mav_services/takeoff");
-  sc_goHome = nh.serviceClient<std_srvs::Trigger>(            "/" + model_name_ + "/mav_services/goHome");
-  sc_goTo = nh.serviceClient<mav_manager::Vec4>(                 "/" + model_name_ + "/mav_services/goTo");
-  sc_goToTimed = nh.serviceClient<mav_manager::GoalTimed>(       "/" + model_name_ + "/mav_services/goToTimed");
-  sc_setDesVelInWorldFrame = nh.serviceClient<mav_manager::Vec4>("/" + model_name_ + "/mav_services/setDesVelInWorldFrame");
-  sc_hover = nh.serviceClient<std_srvs::Trigger>(             "/" + model_name_ + "/mav_services/hover");
-  sc_ehover = nh.serviceClient<std_srvs::Trigger>(            "/" + model_name_ + "/mav_services/ehover");
-  sc_land = nh.serviceClient<std_srvs::Trigger>(              "/" + model_name_ + "/mav_services/land");
-  sc_eland = nh.serviceClient<std_srvs::Trigger>(             "/" + model_name_ + "/mav_services/eland");
-  sc_estop = nh.serviceClient<std_srvs::Trigger>(             "/" + model_name_ + "/mav_services/estop");
+  const std::string service_base_name = "/" + model_name + "/mav_services/";
+  sc_motors = nh.serviceClient<std_srvs::SetBool>(service_base_name + "motors");
+  sc_takeoff = nh.serviceClient<std_srvs::Trigger>(service_base_name + "takeoff");
+  sc_goHome = nh.serviceClient<std_srvs::Trigger>(service_base_name + "goHome");
+  sc_goTo = nh.serviceClient<mav_manager::Vec4>(service_base_name + "goTo");
+  sc_goToTimed = nh.serviceClient<mav_manager::GoalTimed>(service_base_name + "goToTimed");
+  sc_setDesVelInWorldFrame = nh.serviceClient<mav_manager::Vec4>(service_base_name + "setDesVelInWorldFrame");
+  sc_hover = nh.serviceClient<std_srvs::Trigger>(service_base_name + "hover");
+  sc_ehover = nh.serviceClient<std_srvs::Trigger>(service_base_name + "ehover");
+  sc_land = nh.serviceClient<std_srvs::Trigger>(service_base_name + "land");
+  sc_eland = nh.serviceClient<std_srvs::Trigger>(service_base_name + "eland");
+  sc_estop = nh.serviceClient<std_srvs::Trigger>(service_base_name + "estop");
 
   odom_sub = nh.subscribe("/" + model_name_ + "/odom_static", 10, &MavManagerInterface::odom_cb, this);
   battery_sub = nh.subscribe("/" + model_name_ + "/battery", 10, &MavManagerInterface::battery_cb, this);
@@ -55,10 +59,10 @@ void MavManagerInterface::battery_cb(const std_msgs::Float32 &msg) {
 
 //   battery_ = msg.data;
 //   ROS_INFO_STREAM(model_name_ << " battery reading "
-// 
+//
 //   unsigned int battery_update_rate = 10; // Hz
 //   unsigned int timeout = 4; // seconds
-// 
+//
 //   static unsigned int counter(0);
 //  if(battery_ < battery_low_) {
 //    ROS_INFO_STREAM(model_name_ << "low battery reading " << counter << "/" << battery_update_rate * timeout);
