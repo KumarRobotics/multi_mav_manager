@@ -1,11 +1,11 @@
 <launch>
 
   <arg name="config_path"/>
-  <arg name="mass"/> 
+  <arg name="mass"/>
   <arg name="sim"/>
-  <arg name="model"/> 
+  <arg name="model"/>
   <arg name="robot_type"/>
-  
+
   <param name="mass" value="$(arg mass)"/>
 
   <node pkg="nodelet"
@@ -52,19 +52,10 @@
     <remap from="~motors" to="motors"/>
   </node>
 
-  <include file="$(find quadrotor_simulator)/launch/quadrotor_simulator.launch" if="$(arg sim)">
-    <arg name="model" value="$(arg model)"/>
-    <arg name="robot_type" value="$(arg robot_type)"/>
+  <include file="$(find quadrotor_simulator)/launch/sim.launch" if="$(arg sim)">
+    <arg name="name" value="$(arg model)"/>
+    <arg name="type" value="$(arg robot_type)"/>
   </include>
-
-  <!-- We might want this to be conditional or only if sim -->
-  <node pkg="mesh_visualization"
-    type="mesh_visualization"
-    name="mesh_visualization"
-    output="screen">
-    <param name="mesh_resource" value="package://mesh_visualization/mesh/hummingbird.mesh"/>
-    <remap from="~input" to="odom"/>
-  </node>
 
   <node pkg="mav_manager"
     type="mav_services"

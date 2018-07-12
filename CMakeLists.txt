@@ -13,7 +13,6 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   sensor_msgs
   geometry_msgs
-  quadrotor_msgs
   mav_manager
   std_msgs
   std_srvs
@@ -37,7 +36,7 @@ add_service_files(
 )
 generate_messages(
   DEPENDENCIES
-  quadrotor_msgs
+  geometry_msgs
 )
 
 catkin_package(
@@ -50,7 +49,6 @@ catkin_package(
     nav_msgs
     sensor_msgs
     geometry_msgs
-    quadrotor_msgs
     mav_manager
     std_msgs
     std_srvs

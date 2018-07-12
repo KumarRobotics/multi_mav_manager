@@ -1,4 +1,4 @@
-quadrotor_msgs/FlatOutputs[] goals
+geometry_msgs/Vector3[] goals
 ---
 bool success
 string message
