@@ -280,8 +280,8 @@ bool MMControl::goForm(multi_mav_manager::Formation::Request &req, multi_mav_man
 
   ROS_INFO("Successfully calcuated goals.");
   if(!checkCapt(res)){
-    ROS_INFO("Issue here?");
-    return true;            // Check that inital and goal locations are properly spaced
+    ROS_INFO("Issue here? Check that initial and goal locations are properly spaced");
+    return true;            // Check that initial and goal locations are properly spaced
   }
 
   ROS_INFO("CAPT...");

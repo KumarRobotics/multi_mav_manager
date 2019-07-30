@@ -1,0 +1,12 @@
+<launch>
+
+  <arg name="config_path" default="$(find multi_mav_manager)/config/hummingbird"/>
+
+  <node pkg="multi_mav_manager"
+      type="multi_mav_services"
+      name="multi_mav_services"
+      output="screen">
+    <rosparam file="$(arg config_path)/multi_mav_manager.yaml"/>
+  </node>
+
+</launch>
