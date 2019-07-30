@@ -488,6 +488,9 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
   assignment_matrix_ = std::vector<int>(num_total_bots);
   bool act = false;
 
+  std::string odom_topic;
+  nh.param("odom_topic", odom_topic, std::string("odom_static"));
+
   for(int i = 0; i < num_total_bots; i++)
   {
     nh.getParam("/" + model_names_[i] + "/active", act);
@@ -495,7 +498,7 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
     float battery_low = 4;
     nh.getParam("battery_low", battery_low);
 
-    auto mmi = std::make_shared<MavManagerInterface>(model_names_[i], act, battery_low, this);
+    auto mmi = std::make_shared<MavManagerInterface>(model_names_[i], odom_topic, act, battery_low, this);
 
     robots_.push_back(mmi);
     //if(act)   active_robots_.push_back(mmi);  // Add to active robots list

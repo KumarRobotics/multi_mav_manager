@@ -15,7 +15,7 @@ class MMControl;
 class MavManagerInterface
 {
   public:
-    MavManagerInterface(std::string model_name, bool active, float battery_low, MMControl* mmc);
+    MavManagerInterface(std::string model_name, std::string odom_topic, bool active, float battery_low, MMControl* mmc);
 
     bool isActive() { return active_; }
 
