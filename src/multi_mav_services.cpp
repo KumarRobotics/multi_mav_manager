@@ -30,7 +30,7 @@ bool MMControl::goToTimed_cb(multi_mav_manager::Formation::Request &req, multi_m
 }
 bool MMControl::goFormRawPos_cb(multi_mav_manager::RawPosFormation::Request &req, multi_mav_manager::RawPosFormation::Response &res){
   // Check equal length of formation_offsets_ and goTo service call
-  if (req.goals.size() != (unsigned)num_active_bots)
+  if (req.goals.size() != (unsigned)num_active_bots_)
   {
     // TODO handle case where goals are different length than robots better
     res.success = false;
@@ -39,7 +39,7 @@ bool MMControl::goFormRawPos_cb(multi_mav_manager::RawPosFormation::Request &req
   }
 
   // TODO: change this sizing thing
-  for(int i = 0; i < num_active_bots; i++)
+  for(int i = 0; i < num_active_bots_; i++)
   {
     formation_offsets_[i][0] = req.goals[i].x;
     formation_offsets_[i][1] = req.goals[i].y;
@@ -61,8 +61,8 @@ bool MMControl::goFormLine_cb(multi_mav_manager::Formation::Request &req, multi_
   formation_shape_ = line;
   cleanFormation(req, res);
 
-  for(int i=0; i<num_active_bots; i++){
-    formation_offsets_[i][0] = (i-((num_active_bots-1)/2.0)) * req.spacing;
+  for(int i=0; i<num_active_bots_; i++){
+    formation_offsets_[i][0] = (i-((num_active_bots_-1)/2.0)) * req.spacing;
     formation_offsets_[i][1] = 0.0;
     formation_offsets_[i][2] = 0.0;
   }
@@ -78,7 +78,7 @@ bool MMControl::goFormTriangle_cb(multi_mav_manager::Formation::Request &req, mu
   double R = req.spacing;
   double th = M_PI / 3.0;
 
-  if(num_active_bots == 6){
+  if(num_active_bots_ == 6){
     formation_offsets_[0][0] = R *  1.0 * std::sin(th); formation_offsets_[0][1] = 0.0;                     formation_offsets_[0][2] = 0.0;
     formation_offsets_[1][0] = R * -1.0 * std::sin(th); formation_offsets_[1][1] = 0.0;                     formation_offsets_[1][2] = 0.0;
     formation_offsets_[2][0] =                     0.0; formation_offsets_[2][1] = R *  1.0 * std::cos(th); formation_offsets_[2][2] = 0.0;
@@ -131,7 +131,7 @@ bool MMControl::goFormAngle_cb(multi_mav_manager::Formation::Request &req, multi
   double x_side = 1.0; // Right side
   double radius = 0.0; // Distance away from leader
 
-  for(int i=0; i<num_active_bots; i++){
+  for(int i=0; i<num_active_bots_; i++){
     formation_offsets_[i][0] = -1 * radius * std::cos(angle/2);
     formation_offsets_[i][1] = radius * x_side * std::sin(angle/2);
     formation_offsets_[i][2] = 0;
@@ -148,11 +148,11 @@ bool MMControl::goFormCircle_cb(multi_mav_manager::Formation::Request &req, mult
   formation_shape_ = circle;
   cleanFormation(req, res);
 
-  double radius = (num_active_bots * req.spacing) / (2 * M_PI);
+  double radius = (num_active_bots_ * req.spacing) / (2 * M_PI);
 
-  for(int i = 0; i < num_active_bots; i++)
+  for(int i = 0; i < num_active_bots_; i++)
   {
-    float theta_i = i * (2 * M_PI / num_active_bots);
+    float theta_i = i * (2 * M_PI / num_active_bots_);
 
     formation_offsets_[i](0) = radius * std::cos(theta_i);
     formation_offsets_[i](1) = radius * std::sin(theta_i);
@@ -167,18 +167,18 @@ bool MMControl::goFormRect_cb(multi_mav_manager::Formation::Request &req, multi_
   formation_shape_ = rect;
   cleanFormation(req, res);
 
-  int min_square_root = floor(sqrt(num_active_bots));
+  int min_square_root = floor(sqrt(num_active_bots_));
   int rows = min_square_root;
   int cols = 1;
 
   for(int rows = min_square_root; rows >=1; rows-=1){
-    if(num_active_bots % rows == 0){
-      cols = num_active_bots / rows;
+    if(num_active_bots_ % rows == 0){
+      cols = num_active_bots_ / rows;
       break;
     }
   }
 
-  for(int i = 0; i < num_active_bots; i++)
+  for(int i = 0; i < num_active_bots_; i++)
   {
     int row_i = i / cols;
     int col_i = i % cols;
@@ -197,7 +197,7 @@ bool MMControl::goFormGrid3d_cb(multi_mav_manager::Formation::Request &req, mult
   formation_shape_ = grid3d;
   cleanFormation(req, res);
 
-  int min_cube_root = floor(std::pow(num_active_bots, 1.0/3.0));
+  int min_cube_root = floor(std::pow(num_active_bots_, 1.0/3.0));
 
   int lays = min_cube_root; // Layers
   int rows = 1;
@@ -206,17 +206,17 @@ bool MMControl::goFormGrid3d_cb(multi_mav_manager::Formation::Request &req, mult
 
   while(!grid_found && lays >= 1)
   {
-    if(num_active_bots % lays == 0){
+    if(num_active_bots_ % lays == 0){
 
-      rows = floor(std::pow((num_active_bots / lays), 1.0/2.0));
+      rows = floor(std::pow((num_active_bots_ / lays), 1.0/2.0));
 
       while(!grid_found && rows >= 1)
       {
         ROS_INFO_STREAM("trying rows = " << rows);
-        if((num_active_bots / lays) % rows == 0){
+        if((num_active_bots_ / lays) % rows == 0){
 
           ROS_INFO_STREAM("found rows = " << rows);
-          cols = (num_active_bots/lays) / rows;
+          cols = (num_active_bots_/lays) / rows;
 
           ROS_INFO_STREAM("found cols = " << cols);
           grid_found = true;
@@ -231,7 +231,7 @@ bool MMControl::goFormGrid3d_cb(multi_mav_manager::Formation::Request &req, mult
 
   ROS_INFO_STREAM("Grid3d found with Layers " << lays << " cols " << cols << " rows " << rows);
 
-  for(int i = 0; i < num_active_bots; i++)
+  for(int i = 0; i < num_active_bots_; i++)
   {
     int lay_i = i / (rows * cols);
     int n_in_lay = i % (rows * cols);
@@ -280,20 +280,20 @@ bool MMControl::goForm(multi_mav_manager::Formation::Request &req, multi_mav_man
 
   ROS_INFO("Successfully calcuated goals.");
   if(!checkCapt(res)){
-    ROS_INFO("Issue here? Check that initial and goal locations are properly spaced");
+    ROS_ERROR("Issue here? Check that initial and goal locations are properly spaced");
     return true;            // Check that initial and goal locations are properly spaced
   }
 
   ROS_INFO("CAPT...");
   createDistMatrix();     // Calculated the distance matrix used by capt
   Hungarian h(assignment_matrix_.data(), &capt_cost_, distMatrixSquared_.data(),
-              num_active_bots, goals_.size()); // Create hungarian object for capt
+              num_active_bots_, goals_.size()); // Create hungarian object for capt
   h.computeAssignment();  // Use capt to find assignments
   calculateDuration();    // Determine temporal scaling based on max dist
 
   mav_manager::GoalTimed srv;
 
-  for(int i=0; i<num_active_bots; i++){
+  for(int i=0; i<num_active_bots_; i++){
 
     ROS_DEBUG_STREAM("Robot: " << i << " has goal number " << assignment_matrix_[i]);
     srv.request.goal[0] = goals_[assignment_matrix_[i]](0);
@@ -320,19 +320,21 @@ bool MMControl::checkCapt(multi_mav_manager::Formation::Response &res){
   std::vector<Eigen::Vector3f> positions = activeRobotPositions();
 
   ROS_INFO("positions.size(): %lu", positions.size());
-  for(int i=0; i<num_active_bots; i++){
-    for(int j=0; j<num_active_bots; j++)
+  for(int i=0; i<num_active_bots_; i++){
+    for(int j=0; j<num_active_bots_; j++)
     {
       if(i != j){
         if((positions[i] - positions[j]).norm() < capt_spacing_)
         {
           res.message += "\nPosition of robots " + std::to_string(i) + " and " + std::to_string(j) + " are too close for capt";
           res.success = false;
+          ROS_WARN("Position of robots %d and %d are too close for capt", i, j );
         }
         if((goals_[i] - goals_[j]).norm() < capt_spacing_)
         {
           res.message += "\nPosition of goals " + std::to_string(i) + " and " + std::to_string(j) + " are too close for capt";
           res.success = false;
+          ROS_WARN("Position of goals %d and %d are too close for capt", i, j );
         }
       }
     }
@@ -347,7 +349,7 @@ void MMControl::calculateDuration(){
 
   auto positions = activeRobotPositions();
 
-  for(int rob_i=0; rob_i<num_active_bots; rob_i++){
+  for(int rob_i=0; rob_i<num_active_bots_; rob_i++){
 
     dist_i = (positions[rob_i] - goals_[assignment_matrix_[rob_i]]).norm();
 
@@ -367,7 +369,7 @@ void MMControl::calculateDuration(){
       15.0 * max_dist_ / (8.0 * vmax),
       std::sqrt((40.0 * std::sqrt(3.0) * max_dist_) / (3.0 * amax)) / 2.0);
 
-  t_start_ = ros::Time::now() + ros::Duration(num_active_bots * 0.02);  // Linearly scale start time by number of robots present
+  t_start_ = ros::Time::now() + ros::Duration(num_active_bots_ * 0.02);  // Linearly scale start time by number of robots present
 }
 
 void MMControl::calculateGoals(){
@@ -379,7 +381,7 @@ void MMControl::calculateGoals(){
                  Eigen::AngleAxisf(formation_roll_, Eigen::Vector3f::UnitX());
 
   // JT: Make sure goals_ is the correct size
-  goals_.resize(num_active_bots);
+  goals_.resize(num_active_bots_);
   for(size_t goal_i=0; goal_i<goals_.size(); goal_i++) {
 
     formation_offsets_[goal_i] =  R * formation_offsets_[goal_i];
@@ -405,7 +407,7 @@ void MMControl::createDistMatrix(){
   capt_cost_ = 0;
   size_t num_goals = goals_.size();
 
-  distMatrixSquared_ = std::vector<double>(num_active_bots * num_goals);
+  distMatrixSquared_ = std::vector<double>(num_active_bots_ * num_goals);
 
   for(size_t robot_i = 0; robot_i < positions.size(); robot_i++){
     for(size_t goal_i = 0; goal_i < num_goals; goal_i++){
@@ -481,17 +483,17 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
 
   // Get information about usable robots
   nh.getParam("model_names", model_names_);
-  num_total_bots = model_names_.size();
+  num_total_bots_ = model_names_.size();
 
-  std::cout << "Constructing multi_mav_control with " << num_total_bots << " indexed bots" << std::endl;
+  std::cout << "Constructing multi_mav_control with " << num_total_bots_ << " indexed bots" << std::endl;
 
-  assignment_matrix_ = std::vector<int>(num_total_bots);
+  assignment_matrix_ = std::vector<int>(num_total_bots_);
   bool act = false;
 
   std::string odom_topic;
   nh.param("odom_topic", odom_topic, std::string("odom_static"));
 
-  for(int i = 0; i < num_total_bots; i++)
+  for(int i = 0; i < num_total_bots_; i++)
   {
     nh.getParam("/" + model_names_[i] + "/active", act);
 
@@ -504,8 +506,8 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
     //if(act)   active_robots_.push_back(mmi);  // Add to active robots list
   }
 
-  num_active_bots = robots_.size();
-  formation_offsets_.resize(num_total_bots);
+  num_active_bots_ = robots_.size();
+  formation_offsets_.resize(num_total_bots_);
 
   srv_motors_                 = nh.advertiseService("motors", &MMControl::motors_cb, this);
   srv_takeoff_                = nh.advertiseService("takeoff", &MMControl::takeoff_cb, this);
@@ -543,7 +545,7 @@ void MMControl::checkActiveRobots()
       std::cout << "\t" << robots_[i]->model_name_ << std::endl;
     }
   }
-  num_active_bots = active_robots_.size();
+  num_active_bots_ = active_robots_.size();
 
   // This is supposed to have the robots automatically reform their formation any time a robot changes its active status
   // but it is much harder than I wanted it to be -Aaron
