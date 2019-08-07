@@ -1,0 +1,46 @@
+model_names: [
+  "dragonfly01",
+  "dragonfly02",
+  "dragonfly03",
+  "dragonfly04",
+  "dragonfly05",
+  "dragonfly06",
+  "dragonfly07",
+  "dragonfly08",
+  "dragonfly09",
+  "dragonfly10",
+  "dragonfly11",
+  "dragonfly12",
+  ]
+
+/dragonfly01/active: 1
+/dragonfly02/active: 1
+/dragonfly03/active: 1
+/dragonfly04/active: 1
+/dragonfly05/active: 1
+/dragonfly06/active: 1
+/dragonfly07/active: 1
+/dragonfly08/active: 1
+/dragonfly09/active: 1
+/dragonfly10/active: 1
+/dragonfly11/active: 1
+/dragonfly12/active: 1
+
+/dragonfly01/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly02/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly03/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly04/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly05/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly06/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly07/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly08/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly09/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly10/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly11/global_start_pos: [1.0, 1.0, 0.0]
+/dragonfly12/global_start_pos: [1.0, 1.0, 0.0]
+
+robot_radius: 0.35
+battery_low: 9.2s
+
+max_vel: 5.0
+max_acc: 4.0

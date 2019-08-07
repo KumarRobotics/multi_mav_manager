@@ -93,8 +93,8 @@ class MMControl
     double capt_spacing_ = rob_radius_ * 2 * std::sqrt(2);   // Minimum spacing required by capt to function
     double default_spacing = 1.25 * capt_spacing_;           // If spacing is unspecified or too small, make it a safe one
 
-    int num_total_bots;
-    int num_active_bots;
+    int num_total_bots_;
+    int num_active_bots_;
 
     std::vector<ros::ServiceServer> srvs;
 

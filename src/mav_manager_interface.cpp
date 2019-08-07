@@ -6,7 +6,7 @@
 
 class MMcontrol;
 
-MavManagerInterface::MavManagerInterface(std::string model_name, bool active, float battery_low, MMControl* mmc)
+MavManagerInterface::MavManagerInterface(std::string model_name, std::string odom_topic, bool active, float battery_low, MMControl* mmc)
   : model_name_(model_name)
   , active_(active)
   , battery_low_(battery_low)
@@ -35,7 +35,7 @@ MavManagerInterface::MavManagerInterface(std::string model_name, bool active, fl
   sc_eland = nh.serviceClient<std_srvs::Trigger>(service_base_name + "eland");
   sc_estop = nh.serviceClient<std_srvs::Trigger>(service_base_name + "estop");
 
-  odom_sub = nh.subscribe("/" + model_name_ + "/odom_static", 10, &MavManagerInterface::odom_cb, this);
+  odom_sub = nh.subscribe("/" + model_name_ + "/" + odom_topic, 10, &MavManagerInterface::odom_cb, this);
   battery_sub = nh.subscribe("/" + model_name_ + "/battery", 10, &MavManagerInterface::battery_cb, this);
 
   srv_deactivate = nh.advertiseService("/" + model_name_ + "/deactivate", &MavManagerInterface::deactivate_cb, this);

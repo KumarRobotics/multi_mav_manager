@@ -1,0 +1,14 @@
+<launch>
+
+  <arg name="odom_topic" default="odom_static"/>
+  <arg name="config_path" default="$(find multi_mav_manager)/config/hummingbird"/>
+
+  <node pkg="multi_mav_manager"
+      type="multi_mav_services"
+      name="multi_mav_services"
+      output="screen">
+    <rosparam file="$(arg config_path)/multi_mav_manager.yaml"/>
+    <param name="odom_topic" value="$(arg odom_topic)"/>
+  </node>
+
+</launch>
