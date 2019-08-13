@@ -1,0 +1,6 @@
+ignore_nodes: [/rosout, "/*master_client_sync*", "/*master_discovery*", "/*node_manager", /*zeroconf, "/rviz*"]
+ignore_topics: ['/rosout', '/rosout_agg']
+ignore_services: ['/*get_loggers', '/*set_logger_level']
+
+sync_topics: ['/dragonfly*/odom']
+sync_services: ['/dragonfly*/mav_services/motors','/dragonfly*/mav_services/takeoff','/dragonfly*/mav_services/land','/dragonfly*/mav_services/goToRelative','/dragonfly*/mav_services/goTo']

@@ -1,0 +1,3 @@
+ignore_nodes: [/rosout, "/*master_client_sync* node", "/*master_discovery*", "/*node_manager", /*zeroconf, "/rviz*"]
+ignore_topics: ['/rosout', '/rosout_agg']
+ignore_services: ['/*get_loggers', '/*set_logger_level']

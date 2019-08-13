@@ -1,0 +1,16 @@
+<launch>
+  <arg name="model" default="dragonfly1"/>
+
+  <group ns="$(arg model)">
+
+    <!--Multimaster -->
+    <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery">
+      <param name="mcast_group" value="224.0.0.1" />
+    </node>
+
+    <node pkg="master_sync_fkie" type="master_sync" name="multimaster_client_sync">
+      <rosparam file="$(find multi_mav_manager)/config/dragonfly/multimaster_remote.yaml" />
+    </node>
+
+  </group>
+</launch>

@@ -59,3 +59,13 @@ add_library(capt include/capt/hungarian/hungarian.cpp)
 
 add_executable(multi_mav_services src/multi_mav_services.cpp src/mav_manager_interface.cpp)
 target_link_libraries(multi_mav_services capt ${catkin_LIBRARIES})
+
+install(TARGETS
+    multi_mav_services
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY config/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config)
+install(DIRECTORY launch/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch)
