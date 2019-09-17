@@ -3,11 +3,13 @@
 #include <hungarian.h>
 
 bool MMControl::motors_cb(std_srvs::SetBool::Request &req, std_srvs::SetBool::Response &res) {
-  return loop<std_srvs::SetBool>(req, res, &MavManagerInterface::sc_motors, "motors");
+  return loop<std_srvs::SetBool>(req, res, &MavManagerInterface::sc_motors_, "motors");
 }
+
 bool MMControl::takeoff_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
-  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_takeoff, "takeoff");
+  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_takeoff_, "takeoff");
 }
+
 /*
 bool MMControl::goHome_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
   // JT: This should use the home location for each robot and leverage CAPT to go there. Otherwise, there could be collisions
@@ -24,10 +26,12 @@ bool MMControl::goTo_cb(multi_mav_manager::Formation::Request &req, multi_mav_ma
 
   return goForm(req, res);
 }
+
 bool MMControl::goToTimed_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res)
 {
   return goForm(req, res);
 }
+
 bool MMControl::goFormRawPos_cb(multi_mav_manager::RawPosFormation::Request &req, multi_mav_manager::RawPosFormation::Response &res){
   // Check equal length of formation_offsets_ and goTo service call
   if (req.goals.size() != (unsigned)num_active_bots_)
@@ -58,7 +62,7 @@ bool MMControl::goFormRawPos_cb(multi_mav_manager::RawPosFormation::Request &req
 
 bool MMControl::goFormLine_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res)
 {
-  formation_shape_ = line;
+  formation_shape_ = FormationShape::line;
   cleanFormation(req, res);
 
   for(int i=0; i<num_active_bots_; i++){
@@ -72,7 +76,7 @@ bool MMControl::goFormLine_cb(multi_mav_manager::Formation::Request &req, multi_
 
 bool MMControl::goFormTriangle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res)
 {
-  formation_shape_ = triangle;
+  formation_shape_ = FormationShape::triangle;
   cleanFormation(req, res);
 
   double R = req.spacing;
@@ -99,7 +103,7 @@ bool MMControl::goFormTriangle_cb(multi_mav_manager::Formation::Request &req, mu
 
 bool MMControl::goFormAngle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res)
 {
-  formation_shape_ = angle;
+  formation_shape_ = FormationShape::angle;
   cleanFormation(req, res);
 
   if(req.param_names.size() != req.param_vals.size()){
@@ -145,7 +149,7 @@ bool MMControl::goFormAngle_cb(multi_mav_manager::Formation::Request &req, multi
 
 bool MMControl::goFormCircle_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res){
 
-  formation_shape_ = circle;
+  formation_shape_ = FormationShape::circle;
   cleanFormation(req, res);
 
   double radius = (num_active_bots_ * req.spacing) / (2 * M_PI);
@@ -164,7 +168,7 @@ bool MMControl::goFormCircle_cb(multi_mav_manager::Formation::Request &req, mult
 
 bool MMControl::goFormRect_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res){
 
-  formation_shape_ = rect;
+  formation_shape_ = FormationShape::rect;
   cleanFormation(req, res);
 
   int min_square_root = floor(sqrt(num_active_bots_));
@@ -194,7 +198,7 @@ bool MMControl::goFormRect_cb(multi_mav_manager::Formation::Request &req, multi_
 
 bool MMControl::goFormGrid3d_cb(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res){
 
-  formation_shape_ = grid3d;
+  formation_shape_ = FormationShape::grid3d;
   cleanFormation(req, res);
 
   int min_cube_root = floor(std::pow(num_active_bots_, 1.0/3.0));
@@ -254,8 +258,8 @@ void MMControl::cleanFormation(multi_mav_manager::Formation::Request &req, multi
   f_res.success = true;
 
   if (req.spacing < capt_spacing_){
-    res.message += "\nRequested spacing is too small, set to default: " + std::to_string(default_spacing);
-    req.spacing = default_spacing;
+    res.message += "\nRequested spacing is too small, set to default: " + std::to_string(default_spacing_);
+    req.spacing = default_spacing_;
   }
 
   f_req.spacing = req.spacing;
@@ -272,16 +276,34 @@ bool MMControl::goForm(multi_mav_manager::Formation::Request &req, multi_mav_man
   for(int i=0; i<3; i++)
     formation_center_(i) = req.center[i];
 
+  //Check if formation center is within safety bounds
+  if( ((formation_center_(0) < min_safety_bounds_.x) || (formation_center_(0) > max_safety_bounds_.x)) ||
+      ((formation_center_(1) < min_safety_bounds_.y) || (formation_center_(1) > max_safety_bounds_.y)) ||
+      ((formation_center_(2) < min_safety_bounds_.z) || (formation_center_(2) > max_safety_bounds_.z)) )
+  {
+    ROS_ERROR("Formation center (%2.2f  %2.2f %2.2f) is outside saftey bounds (%2.2f  %2.2f) (%2.2f  %2.2f) (%2.2f  %2.2f)",
+        formation_center_(0), formation_center_(1), formation_center_(2),
+        min_safety_bounds_.x, max_safety_bounds_.x, min_safety_bounds_.y, max_safety_bounds_.y, min_safety_bounds_.z, max_safety_bounds_.z);
+    res.message += "Formation center is outside saftey bounds";
+    res.success = false;
+    return false;
+  }
+
   formation_roll_ = req.roll;
   formation_pitch_ = req.pitch;
   formation_yaw_ = req.yaw;
 
-  calculateGoals();       // Calculate global goal locations from formation information
-
+  if(!calculateGoals()){       // Calculate global goal locations from formation information
+    ROS_ERROR("Goals computed outside saftey bounds, check formation bounds and center");
+    res.message += "failed during calculate Goals";
+    res.success = false;
+    return false;
+  }
   ROS_INFO("Successfully calcuated goals.");
+
   if(!checkCapt(res)){
     ROS_ERROR("Issue here? Check that initial and goal locations are properly spaced");
-    return true;            // Check that initial and goal locations are properly spaced
+    return false;            // Check that initial and goal locations are properly spaced
   }
 
   ROS_INFO("CAPT...");
@@ -292,7 +314,6 @@ bool MMControl::goForm(multi_mav_manager::Formation::Request &req, multi_mav_man
   calculateDuration();    // Determine temporal scaling based on max dist
 
   mav_manager::GoalTimed srv;
-
   for(int i=0; i<num_active_bots_; i++){
 
     ROS_DEBUG_STREAM("Robot: " << i << " has goal number " << assignment_matrix_[i]);
@@ -304,9 +325,7 @@ bool MMControl::goForm(multi_mav_manager::Formation::Request &req, multi_mav_man
     srv.request.t_start = t_start_;
 
     // ROS_INFO_STREAM("service goes to " << srv.request.goal[0] << " with time " << srv.request.duration);
-
-    if (!active_robots_[i]->sc_goToTimed.call(srv))
-    {
+    if (!active_robots_[i]->sc_goToTimed_.call(srv)){
       res.message += active_robots_[i]->model_name_ + " failed during goForm";
       res.success = false;
     }
@@ -319,22 +338,25 @@ bool MMControl::checkCapt(multi_mav_manager::Formation::Response &res){
 
   std::vector<Eigen::Vector3f> positions = activeRobotPositions();
 
-  ROS_INFO("positions.size(): %lu", positions.size());
   for(int i=0; i<num_active_bots_; i++){
     for(int j=0; j<num_active_bots_; j++)
     {
       if(i != j){
         if((positions[i] - positions[j]).norm() < capt_spacing_)
         {
-          res.message += "\nPosition of robots " + std::to_string(i) + " and " + std::to_string(j) + " are too close for capt";
+          float current_spacing = (positions[i] - positions[j]).norm();
+          res.message += "\nRobots " + std::to_string(i) + " and " + std::to_string(j)
+            + " are too close for capt. Current spacing: " + std::to_string(current_spacing) + " expected: " + std::to_string(capt_spacing_);
           res.success = false;
-          ROS_WARN("Position of robots %d and %d are too close for capt", i, j );
+          ROS_WARN("Robots %d and %d are too close for capt. Current spacing: %f expected: %f", i, j, current_spacing, capt_spacing_);
         }
         if((goals_[i] - goals_[j]).norm() < capt_spacing_)
         {
-          res.message += "\nPosition of goals " + std::to_string(i) + " and " + std::to_string(j) + " are too close for capt";
+          float current_spacing = (goals_[i] - goals_[j]).norm();
+          res.message += "\nGoals " + std::to_string(i) + " and " + std::to_string(j)
+            + " are too close for capt. Current spacing: " + std::to_string(current_spacing) + " expected: " + std::to_string(capt_spacing_);
           res.success = false;
-          ROS_WARN("Position of goals %d and %d are too close for capt", i, j );
+          ROS_WARN("Goals %d and %d are too close for capt. Current spacing: %f expected: %f", i, j, (goals_[i] - goals_[j]).norm(), capt_spacing_);
         }
       }
     }
@@ -359,20 +381,17 @@ void MMControl::calculateDuration(){
   // duration_ = std::sqrt(max_dist_) * 3; // TODO make a better heuristic for temporal scaling
   // duration_ = 0.2 + (max_dist_ / 0.25); // TODO Change to max velocity and min duration variables or params
 
-  float vmax(2.0), amax(1.0);
-  nh.getParam("max_vel", vmax);
-  nh.getParam("max_acc", amax);
-  ROS_INFO("Using max_vel = %2.2f m/s and max_acc = %2.2f m/s^2 over a distance of %2.2f m", vmax, amax, max_dist_);
+  ROS_INFO("Using max_vel: %2.2f m/s and max_acc: %2.2f m/s^2 over a distance: %2.2f m", vmax_, amax_, max_dist_);
 
   // To determine the duration, see JT's matlab script in std_trackers/matlab
   duration_ = std::max(
-      15.0 * max_dist_ / (8.0 * vmax),
-      std::sqrt((40.0 * std::sqrt(3.0) * max_dist_) / (3.0 * amax)) / 2.0);
+      15.0 * max_dist_ / (8.0 * vmax_),
+      std::sqrt((40.0 * std::sqrt(3.0) * max_dist_) / (3.0 * amax_)) / 2.0);
 
   t_start_ = ros::Time::now() + ros::Duration(num_active_bots_ * 0.02);  // Linearly scale start time by number of robots present
 }
 
-void MMControl::calculateGoals(){
+bool MMControl::calculateGoals(){
 
   // Define Rotation Matrices based on a yaw-pitch-roll euler angle rotation
   // Order is ZYX, yaw*pitch*roll
@@ -380,6 +399,7 @@ void MMControl::calculateGoals(){
                  Eigen::AngleAxisf(formation_pitch_, Eigen::Vector3f::UnitY()) *
                  Eigen::AngleAxisf(formation_roll_, Eigen::Vector3f::UnitX());
 
+  bool valid_goals = true;
   // JT: Make sure goals_ is the correct size
   goals_.resize(num_active_bots_);
   for(size_t goal_i=0; goal_i<goals_.size(); goal_i++) {
@@ -391,13 +411,24 @@ void MMControl::calculateGoals(){
         formation_center_[dim_i] + formation_offsets_[goal_i](dim_i);
     }
 
-    if(goals_[goal_i](2) < 0.0f) {
-      ROS_INFO("Goal %zu was too low at %2.2f so I set it to 0", goal_i, goals_[goal_i](2));
-      goals_[goal_i](2) = 0.0f;   // Protect against robots crashing into the ground
-      // TODO make minimum height a param
-      // TODO make the boundaries of the space a param
+    if((goals_[goal_i](0) < min_safety_bounds_.x) || (goals_[goal_i](0) > max_safety_bounds_.x) ){
+      ROS_WARN("Goal %zu x: %2.2f outside the bound (%2.2f  %2.2f)", goal_i, goals_[goal_i](0),  min_safety_bounds_.x, max_safety_bounds_.x);
+      valid_goals = false;
+    }
+
+    if((goals_[goal_i](1) < min_safety_bounds_.y) || (goals_[goal_i](1) > max_safety_bounds_.y) ){
+      ROS_WARN("Goal %zu y: %2.2f outside the bound (%2.2f  %2.2f)", goal_i, goals_[goal_i](1),  min_safety_bounds_.y, max_safety_bounds_.y);
+      valid_goals = false;
+    }
+
+    if((goals_[goal_i](2) < min_safety_bounds_.z) || (goals_[goal_i](2) > max_safety_bounds_.z) ){
+      ROS_WARN("Goal %zu z: %2.2f outside the bound (%2.2f  %2.2f)", goal_i, goals_[goal_i](2),  min_safety_bounds_.z, max_safety_bounds_.z);
+      valid_goals = false;
     }
   }
+
+  //TODO check if formation roll/pitch causes vehicle one above each other, prevent downwash
+  return valid_goals;
 }
 
 void MMControl::createDistMatrix(){
@@ -420,22 +451,22 @@ void MMControl::createDistMatrix(){
 }
 
 bool MMControl::setDesVelInWorldFrame_cb(mav_manager::Vec4::Request &req, mav_manager::Vec4::Response &res) {
-  return loop<mav_manager::Vec4>(req, res, &MavManagerInterface::sc_setDesVelInWorldFrame, "setDesVelInWorldFrame");
+  return loop<mav_manager::Vec4>(req, res, &MavManagerInterface::sc_setDesVelInWorldFrame_, "setDesVelInWorldFrame");
 }
 bool MMControl::hover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
-  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_hover, "hover");
+  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_hover_, "hover");
 }
 bool MMControl::ehover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
-  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_ehover, "ehover");
+  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_ehover_, "ehover");
 }
 bool MMControl::land_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
-  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_land, "land");
+  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_land_, "land");
 }
 bool MMControl::eland_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
-  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_eland, "eland");
+  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_eland_, "eland");
 }
 bool MMControl::estop_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
-  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_estop, "estop");
+  return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_estop_, "estop");
 }
 
 template <typename T>
@@ -471,37 +502,63 @@ bool MMControl::loop(const typename T::Request &req, typename T::Response &res,
 }
 
 
-MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
+MMControl::MMControl() : nh_("multi_mav_services")
 {
-  ros::Duration(5.0).sleep();
-
   // Get robot size/spacing information
-  nh.getParam("robot_radius", rob_radius_);
-  std::cout << "Robot radius is set to " << rob_radius_ << std::endl;
+  nh_.param("robot_radius", rob_radius_, 0.4);
   capt_spacing_ = rob_radius_ * 2 * std::sqrt(2);   // Minimum spacing required by capt to function
-  default_spacing = 1.25 * capt_spacing_;           // If formation spacing is unspecified or too small, make it a safe one
+  default_spacing_ = 1.25 * capt_spacing_;           // If formation spacing is unspecified or too small, make it a safe one
+  ROS_INFO_STREAM("Robot radius: " << rob_radius_ << " CAPT spacing: " << capt_spacing_);
 
   // Get information about usable robots
-  nh.getParam("model_names", model_names_);
+  nh_.getParam("model_names", model_names_);
   num_total_bots_ = model_names_.size();
-
-  std::cout << "Constructing multi_mav_control with " << num_total_bots_ << " indexed bots" << std::endl;
-
   assignment_matrix_ = std::vector<int>(num_total_bots_);
-  bool act = false;
+  ROS_INFO_STREAM("Constructing multi_mav_control with " << num_total_bots_ << " indexed bots");
 
-  std::string odom_topic;
-  nh.param("odom_topic", odom_topic, std::string("odom_static"));
+  nh_.param("max_vel", vmax_, 1.0);
+  nh_.param("max_acc", amax_, 0.5);
+  //nh_.param("minimum_height", minimum_height_, 0.1);
+  ROS_INFO_STREAM("Max vel: " << vmax_ << " Max acc: " << amax_);
+
+  std::string odom_topic, goto_base_name;
+  nh_.param("odom_topic", odom_topic, std::string("odom_static"));
+  nh_.param("goto_base_name", goto_base_name, std::string("mav_services"));
+
+  std::vector<double> min_bounds, max_bounds;
+  nh_.getParam("min_safety_bounds", min_bounds);
+  if(min_bounds.size() != 3)
+  {
+    ROS_WARN("Check safety bounds, size should be 3, setting default");
+    min_safety_bounds_.x = -4.0; min_safety_bounds_.y = -4.0; min_safety_bounds_.z = 0.2;
+  }
+  else
+  {
+    min_safety_bounds_.x = min_bounds[0]; min_safety_bounds_.y = min_bounds[1]; min_safety_bounds_.z = min_bounds[2];
+  }
+  nh_.getParam("max_safety_bounds", max_bounds);
+  if(max_bounds.size() != 3)
+  {
+    ROS_WARN("Check safety bounds, size should be 3, setting default");
+    max_safety_bounds_.x = 4.0; max_safety_bounds_.y = 4.0; max_safety_bounds_.z = 4.0;
+  }
+  else
+  {
+    max_safety_bounds_.x = max_bounds[0]; max_safety_bounds_.y = max_bounds[1]; max_safety_bounds_.z = max_bounds[2];
+  }
+
+  ROS_INFO("Safety bounds min: (%2.2f, %2.2f, %2.2f) max: (%2.2f, %2.2f, %2.2f)",
+      min_safety_bounds_.x, min_safety_bounds_.y, min_safety_bounds_.z,
+      max_safety_bounds_.x, max_safety_bounds_.y, max_safety_bounds_.z);
+
+  bool act = false;
+  float battery_low;
+  nh_.param<float>("battery_low", battery_low, 4.0);
 
   for(int i = 0; i < num_total_bots_; i++)
   {
-    nh.getParam("/" + model_names_[i] + "/active", act);
-
-    float battery_low = 4;
-    nh.getParam("battery_low", battery_low);
-
-    auto mmi = std::make_shared<MavManagerInterface>(model_names_[i], odom_topic, act, battery_low, this);
-
+    nh_.getParam("/" + model_names_[i] + "/active", act);
+    auto mmi = std::make_shared<MavManagerInterface>(model_names_[i], odom_topic, goto_base_name, act, battery_low, this);
     robots_.push_back(mmi);
     //if(act)   active_robots_.push_back(mmi);  // Add to active robots list
   }
@@ -509,26 +566,28 @@ MMControl::MMControl() : nh("multi_mav_services"), priv_nh("")
   num_active_bots_ = robots_.size();
   formation_offsets_.resize(num_total_bots_);
 
-  srv_motors_                 = nh.advertiseService("motors", &MMControl::motors_cb, this);
-  srv_takeoff_                = nh.advertiseService("takeoff", &MMControl::takeoff_cb, this);
-  // srv_goHome_                 = nh.advertiseService("goHome", &MMControl::goHome_cb, this);
-  srv_goTo_                   = nh.advertiseService("goTo", &MMControl::goTo_cb, this);
-  srv_goToTimed               = nh.advertiseService("goToTimed", &MMControl::goToTimed_cb, this);
-  srv_setDesVelInWorldFrame_  = nh.advertiseService("setDesVelInWorldFrame", &MMControl::setDesVelInWorldFrame_cb, this);
-  srv_hover_                  = nh.advertiseService("hover", &MMControl::hover_cb, this);
-  srv_ehover_                 = nh.advertiseService("ehover", &MMControl::ehover_cb, this);
-  srv_land_                   = nh.advertiseService("land", &MMControl::land_cb, this);
-  srv_eland_                  = nh.advertiseService("eland", &MMControl::eland_cb, this);
-  srv_estop_                  = nh.advertiseService("estop", &MMControl::estop_cb, this);
-  srv_goFormRawPos_           = nh.advertiseService("goFormRawPos", &MMControl::goFormRawPos_cb, this);
-  srv_goFormCircle_           = nh.advertiseService("goFormCircle", &MMControl::goFormCircle_cb, this);
-  srv_goFormLine_             = nh.advertiseService("goFormLine", &MMControl::goFormLine_cb, this);
-  srv_goFormRect_             = nh.advertiseService("goFormRect", &MMControl::goFormRect_cb, this);
-  srv_goFormGrid3d_           = nh.advertiseService("goFormGrid3d", &MMControl::goFormGrid3d_cb, this);
-  srv_goFormAngle_            = nh.advertiseService("goFormAngle", &MMControl::goFormAngle_cb, this);
-  srv_goFormTriangle_         = nh.advertiseService("goFormTriangle", &MMControl::goFormTriangle_cb, this);
+  srv_motors_                 = nh_.advertiseService("motors", &MMControl::motors_cb, this);
+  srv_takeoff_                = nh_.advertiseService("takeoff", &MMControl::takeoff_cb, this);
+  // srv_goHome_                 = nh_.advertiseService("goHome", &MMControl::goHome_cb, this);
+  srv_goTo_                   = nh_.advertiseService("goTo", &MMControl::goTo_cb, this);
+  srv_goToTimed_              = nh_.advertiseService("goToTimed", &MMControl::goToTimed_cb, this);
+  srv_setDesVelInWorldFrame_  = nh_.advertiseService("setDesVelInWorldFrame", &MMControl::setDesVelInWorldFrame_cb, this);
+  srv_hover_                  = nh_.advertiseService("hover", &MMControl::hover_cb, this);
+  srv_ehover_                 = nh_.advertiseService("ehover", &MMControl::ehover_cb, this);
+  srv_land_                   = nh_.advertiseService("land", &MMControl::land_cb, this);
+  srv_eland_                  = nh_.advertiseService("eland", &MMControl::eland_cb, this);
+  srv_estop_                  = nh_.advertiseService("estop", &MMControl::estop_cb, this);
+  srv_goFormRawPos_           = nh_.advertiseService("goFormRawPos", &MMControl::goFormRawPos_cb, this);
+  srv_goFormCircle_           = nh_.advertiseService("goFormCircle", &MMControl::goFormCircle_cb, this);
+  srv_goFormLine_             = nh_.advertiseService("goFormLine", &MMControl::goFormLine_cb, this);
+  srv_goFormRect_             = nh_.advertiseService("goFormRect", &MMControl::goFormRect_cb, this);
+  srv_goFormGrid3d_           = nh_.advertiseService("goFormGrid3d", &MMControl::goFormGrid3d_cb, this);
+  srv_goFormAngle_            = nh_.advertiseService("goFormAngle", &MMControl::goFormAngle_cb, this);
+  srv_goFormTriangle_         = nh_.advertiseService("goFormTriangle", &MMControl::goFormTriangle_cb, this);
 
-  std::cout << "================== Multi Mav Manager is ready for action ==================" << std::endl;
+  ros::Duration(1.0).sleep(); //Why?
+  checkActiveRobots();
+  ROS_WARN_STREAM("================== Multi Mav Manager is ready for action ==================");
 }
 
 // Function gets called when a robot changes it's active status
@@ -557,7 +616,7 @@ std::vector<Eigen::Vector3f> MMControl::activeRobotPositions()
   positions.resize(active_robots_.size());
 
   for(unsigned int i = 0; i < active_robots_.size(); i++)
-    positions[i] = active_robots_[i]->position_;
+    positions[i] = active_robots_[i]->getPosition();
 
   return positions;
 }

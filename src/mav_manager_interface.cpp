@@ -6,45 +6,50 @@
 
 class MMcontrol;
 
-MavManagerInterface::MavManagerInterface(std::string model_name, std::string odom_topic, bool active, float battery_low, MMControl* mmc)
+MavManagerInterface::MavManagerInterface(std::string model_name, std::string odom_topic, std::string goto_base_name, bool active, float battery_low, MMControl* mmc)
   : model_name_(model_name)
   , active_(active)
   , battery_low_(battery_low)
   , mmc_(mmc)
-  , nh("multi_mav_services")
+  , nh_("multi_mav_services")
 {
-  //std::cout << "Creating Mav Manager Interface object for " << model_name_ << std::endl;
 
   if(active)
     std::cout << model_name_ << " is active" << std::endl;
   else
     std::cout << model_name_ << " is NOT active" << std::endl;
 
-  //std::cout << "\tBattery low voltage is " << battery_low_ << std::endl;
-
   const std::string service_base_name = "/" + model_name + "/mav_services/";
-  sc_motors = nh.serviceClient<std_srvs::SetBool>(service_base_name + "motors");
-  sc_takeoff = nh.serviceClient<std_srvs::Trigger>(service_base_name + "takeoff");
-  sc_goHome = nh.serviceClient<std_srvs::Trigger>(service_base_name + "goHome");
-  sc_goTo = nh.serviceClient<mav_manager::Vec4>(service_base_name + "goTo");
-  sc_goToTimed = nh.serviceClient<mav_manager::GoalTimed>(service_base_name + "goToTimed");
-  sc_setDesVelInWorldFrame = nh.serviceClient<mav_manager::Vec4>(service_base_name + "setDesVelInWorldFrame");
-  sc_hover = nh.serviceClient<std_srvs::Trigger>(service_base_name + "hover");
-  sc_ehover = nh.serviceClient<std_srvs::Trigger>(service_base_name + "ehover");
-  sc_land = nh.serviceClient<std_srvs::Trigger>(service_base_name + "land");
-  sc_eland = nh.serviceClient<std_srvs::Trigger>(service_base_name + "eland");
-  sc_estop = nh.serviceClient<std_srvs::Trigger>(service_base_name + "estop");
+  sc_motors_ = nh_.serviceClient<std_srvs::SetBool>(service_base_name + "motors");
+  sc_takeoff_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "takeoff");
+  sc_goHome_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "goHome");
+  sc_setDesVelInWorldFrame_ = nh_.serviceClient<mav_manager::Vec4>(service_base_name + "setDesVelInWorldFrame");
+  sc_hover_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "hover");
+  sc_ehover_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "ehover");
+  sc_land_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "land");
+  sc_eland_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "eland");
+  sc_estop_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "estop");
 
-  odom_sub = nh.subscribe("/" + model_name_ + "/" + odom_topic, 10, &MavManagerInterface::odom_cb, this);
-  battery_sub = nh.subscribe("/" + model_name_ + "/battery", 10, &MavManagerInterface::battery_cb, this);
+  sc_goTo_ = nh_.serviceClient<mav_manager::Vec4>(service_base_name + "goTo");
+  const std::string goto_srv_base_name = "/" + model_name + "/" + goto_base_name + "/";
+  //Use goTo Timed that manages common reference for non-vicon robots
+  sc_goToTimed_ = nh_.serviceClient<mav_manager::GoalTimed>(goto_srv_base_name + "goToTimed");
 
-  srv_deactivate = nh.advertiseService("/" + model_name_ + "/deactivate", &MavManagerInterface::deactivate_cb, this);
-  srv_activate = nh.advertiseService("/" + model_name_ + "/activate", &MavManagerInterface::activate_cb, this);
+  odom_sub_ = nh_.subscribe("/" + model_name_ + "/" + odom_topic, 10, &MavManagerInterface::odom_cb, this);
+  battery_sub_ = nh_.subscribe("/" + model_name_ + "/battery", 10, &MavManagerInterface::battery_cb, this);
+
+  srv_deactivate_ = nh_.advertiseService("/" + model_name_ + "/deactivate", &MavManagerInterface::deactivate_cb, this);
+  srv_activate_ = nh_.advertiseService("/" + model_name_ + "/activate", &MavManagerInterface::activate_cb, this);
 
   position_ = Eigen::Vector3f::Zero();
-  goal_ = Eigen::Vector3f::Zero();
 }
 
+Eigen::Vector3f MavManagerInterface::getPosition(){
+  if( (ros::Time::now() - odom_.header.stamp).toSec()> 0.5){
+    ROS_ERROR("%s odom not updated since %f sec", model_name_.c_str(), (ros::Time::now() - odom_.header.stamp).toSec());
+  }
+  return position_;
+}
 
 void MavManagerInterface::odom_cb(const nav_msgs::Odometry::ConstPtr &msg) {
   odom_ = *msg;
@@ -93,7 +98,7 @@ bool MavManagerInterface::deactivate_cb(std_srvs::Trigger::Request &req,  std_sr
 }
 
 void MavManagerInterface::deactivate(){
-  ROS_INFO_STREAM(model_name_ << " is deactivating, it will land. Please turn off the motors when it is done landing" << std::endl);
+  ROS_WARN_STREAM(model_name_ << " is deactivating, it will land. Please turn off the motors when it is done landing" << std::endl);
 
   // TODO: add trackers monitoring to see if it is landed then turn off the motors
   // TODO: switch all of this over to actions
@@ -101,7 +106,7 @@ void MavManagerInterface::deactivate(){
 
   //mmc_->checkActiveRobots(); // TODO: Figure out how to make this work
   std_srvs::Trigger srv;
-  sc_land.call(srv);
+  sc_land_.call(srv);
   active_ = false;
 }
 

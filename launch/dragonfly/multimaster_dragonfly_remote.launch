@@ -1,7 +1,7 @@
 <launch>
-  <arg name="model" default="dragonfly1"/>
+  <arg name="mav_name" default="dragonfly1"/>
 
-  <group ns="$(arg model)">
+  <group ns="$(arg mav_name)">
 
     <!--Multimaster -->
     <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery">

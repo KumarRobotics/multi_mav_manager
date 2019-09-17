@@ -15,39 +15,26 @@ class MMControl;
 class MavManagerInterface
 {
   public:
-    MavManagerInterface(std::string model_name, std::string odom_topic, bool active, float battery_low, MMControl* mmc);
+    MavManagerInterface(std::string model_name, std::string odom_topic, std::string goto_base_name, bool active, float battery_low, MMControl* mmc);
 
     bool isActive() { return active_; }
 
-    std::string model_name_;
-
-    // JT: I think these should be private members with public accessors
-    nav_msgs::Odometry odom_;
-    Eigen::Vector3f position_;
-    Eigen::Vector3f goal_;
-
-    // TODO: do I want offsets stored in here?
+    Eigen::Vector3f getPosition();
 
     ros::ServiceClient
-      sc_motors,
-      sc_takeoff,
-      sc_goHome,
-      sc_goTo,
-      sc_goToTimed,
-      sc_setDesVelInWorldFrame,
-      sc_hover,
-      sc_ehover,
-      sc_land,
-      sc_eland,
-      sc_estop;
+      sc_motors_,
+      sc_takeoff_,
+      sc_goHome_,
+      sc_goTo_,
+      sc_goToTimed_,
+      sc_setDesVelInWorldFrame_,
+      sc_hover_,
+      sc_ehover_,
+      sc_land_,
+      sc_eland_,
+      sc_estop_;
 
-    ros::ServiceServer
-      srv_deactivate,
-      srv_activate;
-
-    ros::Subscriber
-      odom_sub,
-      battery_sub;
+    std::string model_name_;
 
   private:
     void odom_cb(const nav_msgs::Odometry::ConstPtr &msg);
@@ -58,12 +45,16 @@ class MavManagerInterface
 
     void deactivate();
 
+    ros::NodeHandle nh_;
+    ros::Subscriber odom_sub_, battery_sub_;
+    ros::ServiceServer srv_deactivate_, srv_activate_;
+    nav_msgs::Odometry odom_;
+
     bool active_;
     float battery_;
     float battery_low_;
     MMControl* mmc_;
-
-    ros::NodeHandle nh; // TODO: do I need this here?
+    Eigen::Vector3f position_;
 };
 
 #endif

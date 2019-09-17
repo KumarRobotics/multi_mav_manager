@@ -12,6 +12,7 @@
 #include <multi_mav_manager/mav_manager_interface.h>
 #include <nav_msgs/Odometry.h>
 #include <std_msgs/Float32.h>
+#include <geometry_msgs/Point32.h>
 #include <std_srvs/SetBool.h>
 #include <std_srvs/Trigger.h>
 
@@ -41,7 +42,7 @@ class MMControl
     bool goForm(multi_mav_manager::Formation::Request &req, multi_mav_manager::Formation::Response &res);
     bool checkCapt(multi_mav_manager::Formation::Response &res);
     void calculateDuration();
-    void calculateGoals();
+    bool calculateGoals();
     void createDistMatrix();
 
     bool setDesVelInWorldFrame_cb(mav_manager::Vec4::Request &req, mav_manager::Vec4::Response &res);
@@ -58,8 +59,7 @@ class MMControl
     std::vector<std::shared_ptr<MavManagerInterface> > robots_;
     std::vector<std::shared_ptr<MavManagerInterface> > active_robots_;
 
-    // JT: I don't think we need a priv_nh
-    ros::NodeHandle nh, priv_nh;
+    ros::NodeHandle nh_;
     std::vector<std::string> model_names_;
     std::vector<Eigen::Vector3f> formation_offsets_;
     std::vector<int> active_bots_;
@@ -72,12 +72,12 @@ class MMControl
     std::vector<double> distMatrixSquared_;
     double max_dist_;
     double duration_;
+    double vmax_, amax_;
     ros::Time t_start_;
 
-    enum Shape {circle, rect, line, angle, grid3d, triangle};
-    Shape formation_shape_;
+    enum class FormationShape {circle, rect, line, angle, grid3d, triangle};
+    FormationShape formation_shape_;
 
-    // JT: I suspect that these could be floats
     double formation_roll_;
     double formation_pitch_;
     double formation_yaw_;
@@ -88,22 +88,23 @@ class MMControl
     multi_mav_manager::Formation::Request f_req;
     multi_mav_manager::Formation::Response f_res;
 
-    // JT: I suspect that these could be floats
-    double rob_radius_ = 0.4;                                // Safe radius of a robot
-    double capt_spacing_ = rob_radius_ * 2 * std::sqrt(2);   // Minimum spacing required by capt to function
-    double default_spacing = 1.25 * capt_spacing_;           // If spacing is unspecified or too small, make it a safe one
+    double rob_radius_;      // Safe radius of a robot
+    double capt_spacing_;    // Minimum spacing required by capt to function
+    double default_spacing_; // If spacing is unspecified or too small, make it a safe one
+    //double minimum_height_;  // Minimum safety height above ground
+
+    geometry_msgs::Point32 min_safety_bounds_; //Safety bounds for the formation
+    geometry_msgs::Point32 max_safety_bounds_;
 
     int num_total_bots_;
     int num_active_bots_;
-
-    std::vector<ros::ServiceServer> srvs;
 
     ros::ServiceServer
       srv_motors_,
       srv_takeoff_,
       // srv_goHome_,
       srv_goTo_,
-      srv_goToTimed,
+      srv_goToTimed_,
       srv_setDesVelInWorldFrame_,
       srv_hover_,
       srv_ehover_,
