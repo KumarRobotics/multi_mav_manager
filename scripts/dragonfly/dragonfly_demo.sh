@@ -1,6 +1,20 @@
 #!/bin/bash
 
-MAV_IDS=(2 5 6)
+#MAV_IDS=(4 5)
+#Get MAV_IDS from CSV
+#readarray -d "," MAV_IDS < mav_ids.csv
+declare -a MAV_IDS
+read line < mav_ids.csv
+echo "Line is : $line"
+for i in $(echo $line | sed "s/,/ /g")
+do
+    MAV_IDS+=("$i")
+done
+NUM_MAV=${#MAV_IDS[@]}
+
+echo 'Num MAVs' $NUM_MAV
+echo 'Running mavs with ID' ${MAV_IDS[*]}
+
 MAV_NAMESPACE=dragonfly
 
 echo "Enable motors... ${ROBOT}"

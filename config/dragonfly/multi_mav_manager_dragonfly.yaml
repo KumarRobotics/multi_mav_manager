@@ -4,6 +4,9 @@ model_names: [
 robot_radius: 0.3
 battery_low: 9.2s
 
+min_safety_bounds: [-3.0, -2.5, 0.2] #Mininum safety bounds x, y, z
+max_safety_bounds: [4.0, 2.5, 2.5] #Maximum safety bounds x, y, z
+
 max_vel: 0.6
 max_acc: 0.5
 

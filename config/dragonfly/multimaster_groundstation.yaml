@@ -3,4 +3,4 @@ ignore_topics: ['/rosout', '/rosout_agg']
 ignore_services: ['/*get_loggers', '/*set_logger_level']
 
 sync_topics: ['/dragonfly*/position_cmd', /dragonfly*/odom', '/dragonfly*/quadrotor_ukf/control_odom', '/dragonfly*/quadrotor_ukf/control_odom_throttled', '/dragonfly*/odom_tag', '/dragonfly*/traj']
-sync_services: ['/dragonfly*/mav_services/motors','/dragonfly*/mav_services/takeoff','/dragonfly*/mav_services/land','/dragonfly*/mav_services/goToRelative','/dragonfly*/mav_services/goTo', '/dragonfly*/tag_manager/goTo', '/dragonfly*/mav_services/setDesVelInWorldFrame', /dragonfly*/tag_manager/goToTimed', '/dragonfly*/tag_search']
+sync_services: ['/dragonfly*/mav_services/motors','/dragonfly*/mav_services/takeoff','/dragonfly*/mav_services/land','/dragonfly*/mav_services/goToRelative','/dragonfly*/mav_services/goTo', '/dragonfly*/tag_manager/goTo', '/dragonfly*/tag_manager/goToTimed', '/dragonfly*/tag_search', '/dragonfly*/mav_services/setDesVelInWorldFrame']
