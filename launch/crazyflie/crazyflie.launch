@@ -37,7 +37,14 @@
     <include file="$(find crazyflie_driver)/launch/crazyflie_add.launch">
       <arg name="uri" value="$(arg uri)" />
       <arg name="tf_prefix" value="$(arg model)" />
-      <arg name="enable_logging" value="False" />
+      <arg name="enable_logging" value="false" />
+      <arg name="enable_logging_imu" value="false" />
+      <arg name="enable_logging_temperature" value="false" />
+      <arg name="enable_logging_magnetic_field" value="false" />
+      <arg name="enable_logging_pressure" value="false" />
+      <arg name="enable_logging_battery" value="true" />
+      <arg name="enable_logging_pose" value="true" />
+      <arg name="enable_logging_packets" value="false"/>
     </include>
 
     <node name="cmd_vel_throttler"
