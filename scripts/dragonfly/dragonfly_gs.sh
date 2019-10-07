@@ -17,8 +17,6 @@ echo 'Running mavs with ID' ${MAV_IDS[*]}
 
 RQT_GUI=rqt_multi_mav_gui
 
-echo 'Running mavs with ID' ${MAV_IDS[*]}
-
 # TODO parse this from command line? Possibly list of mav ids and namespace?
 MAV_NAMESPACE=dragonfly
 
