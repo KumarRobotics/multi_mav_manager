@@ -57,12 +57,14 @@ done
 
 # Generate vicon launch file based on number of robots
 cp $(rospack find mocap_vicon)/launch/vicon.launch ~/.ros/vicon.launch
+sed -i "6a\    <param name=\"server_address\" value=\"mocap\"\/>" ~/.ros/vicon.launch
+sed -i "6d" ~/.ros/vicon.launch
 for id in ${MAV_IDS[*]}
 do
   MAV_NAME=${MAV_NAMESPACE}${id}
   sed -i "12a\    <remap from=\"vicon/${MAV_NAME}/odom\" to=\"/${MAV_NAME}/odom\"\/>" ~/.ros/vicon.launch
 done
-
+exit 1
 RQT_GUI=rqt_multi_mav_gui
 MASTER_URI=http://localhost:11311
 SETUP_ROS_STRING="export ROS_MASTER_URI=${MASTER_URI}"

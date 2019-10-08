@@ -5,7 +5,7 @@
   <arg name="model"/>
   <arg name="robot_type"/>
 
-  <!--<param name="mass" value="$(arg mass)"/>-->
+  <param name="mass" value="$(arg mass)"/>
 
   <node pkg="rotating_world" name="rotating_world" type="rotating_world" output="screen" >
     <remap from="~odom_in" to="odom"/>

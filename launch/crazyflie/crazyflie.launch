@@ -7,8 +7,8 @@
   <arg name="mass" default="0.029"/>
   <arg name="rotate_world" default="false"/>
 
-  <arg name="launch_file" value="robot_common" if="$(arg rotate_world)"/>
-  <arg name="launch_file" value="robot_common_rotate" unless="$(arg rotate_world)"/>
+  <arg name="launch_file" value="robot_common" unless="$(arg rotate_world)"/>
+  <arg name="launch_file" value="robot_common_rotate" if="$(arg rotate_world)"/>
 
   <!-- Add odometry node -->
   <group ns="$(arg model)">
@@ -23,7 +23,7 @@
     <!-- For communication -->
     <node pkg="nodelet"
       type="nodelet"
-      args="load crazyflie_interface/SO3CmdToCrazyflie standalone_nodelet"
+      args="load crazyflie_interface/SO3CmdToCrazyflie controller_nodelet"
       name="so3cmd_to_crazyflie"
       required="true"
       clear_params="true"
@@ -37,13 +37,13 @@
     <include file="$(find crazyflie_driver)/launch/crazyflie_add.launch">
       <arg name="uri" value="$(arg uri)" />
       <arg name="tf_prefix" value="$(arg model)" />
-      <arg name="enable_logging" value="false" />
+      <arg name="enable_logging" value="true" />
       <arg name="enable_logging_imu" value="false" />
       <arg name="enable_logging_temperature" value="false" />
       <arg name="enable_logging_magnetic_field" value="false" />
       <arg name="enable_logging_pressure" value="false" />
       <arg name="enable_logging_battery" value="true" />
-      <arg name="enable_logging_pose" value="true" />
+      <arg name="enable_logging_pose" value="false" />
       <arg name="enable_logging_packets" value="false"/>
     </include>
 
