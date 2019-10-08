@@ -3,7 +3,7 @@
 LOCATION=perch
 CONFIG_PATH=$(rospack find multi_mav_manager)/config/crazyflie/${LOCATION}
 MAV_NAMESPACE=loco
-MAV_MASS=0.029
+MAV_MASS=0.036
 ROTATE_WORLD=false
 
 #Get all radio uris for MAVs from CSV
@@ -64,7 +64,7 @@ do
   MAV_NAME=${MAV_NAMESPACE}${id}
   sed -i "12a\    <remap from=\"vicon/${MAV_NAME}/odom\" to=\"/${MAV_NAME}/odom\"\/>" ~/.ros/vicon.launch
 done
-exit 1
+
 RQT_GUI=rqt_multi_mav_gui
 MASTER_URI=http://localhost:11311
 SETUP_ROS_STRING="export ROS_MASTER_URI=${MASTER_URI}"

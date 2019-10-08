@@ -4,7 +4,7 @@
   <arg name="config_path"/>
   <arg name="uri" default="radio://0/100/2M/0xE7E7E7E7E7" />
   <arg name="cmd_frequency" default="30" />
-  <arg name="mass" default="0.029"/>
+  <arg name="mass" default="0.036"/>
   <arg name="rotate_world" default="false"/>
 
   <arg name="launch_file" value="robot_common" unless="$(arg rotate_world)"/>
