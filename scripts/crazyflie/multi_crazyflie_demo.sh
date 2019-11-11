@@ -85,18 +85,20 @@ tmux setw -g mouse on
 tmux rename-window -t $SESSION_NAME "Main"
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; roscore" Enter
 tmux split-window -t $SESSION_NAME -h
-tmux select-pane -t 0
-tmux split-window -t $SESSION_NAME -v
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:0; rqt --standalone ${RQT_GUI}" Enter
 #tmux split-window -t $SESSION_NAME
 #tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:0; rosrun rviz rviz -d ${RVIZ_CONFIG_FILE}" Enter
-tmux split-window -t $SESSION_NAME
-tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; cd ~/.ros; roslaunch vicon.launch" Enter
 
-tmux select-pane -t 3
+tmux new-window -t $SESSION_NAME -n "Multi"
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; cd ~/.ros; roslaunch vicon.launch" Enter
+tmux split-window -t $SESSION_NAME -h
+tmux select-pane -t 0
+tmux split-window -t $SESSION_NAME -v
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch crazyflie_driver crazyflie_server.launch" Enter
-tmux split-window -t $SESSION_NAME
+tmux split-window -t $SESSION_NAME -v
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch multi_mav_manager multi_mav_manager.launch odom_topic:=odom config_path:=$HOME/.ros/" Enter
+tmux select-pane -t 3
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; roscd multi_mav_manager/scripts/crazyflie; ./crazyflie_demo.sh"
 # tmux select-layout -t $SESSION_NAME vertical
 
 # Add window to easily kill all processes
@@ -111,5 +113,5 @@ do
   tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch multi_mav_manager crazyflie.launch model:=${MAV_NAME} uri:=${MAV_RADIO_URIS[${id}]} mass:=${MAV_MASS} config_path:=${CONFIG_PATH} rotate_world:=${ROTATE_WORLD}" Enter
 done
 
-tmux select-window -t $SESSION_NAME:0
+tmux select-window -t $SESSION_NAME:1
 tmux -2 attach-session -t $SESSION_NAME
