@@ -2,12 +2,14 @@
 
 LOCATION=perch
 CONFIG_PATH=$(rospack find multi_mav_manager)/config/crazyflie/${LOCATION}
+SCRIPTS_PATH=$(rospack find multi_mav_manager)/scripts/crazyflie/
+
 MAV_NAMESPACE=loco
 MAV_MASS=0.036
 ROTATE_WORLD=false
 
 #Get all radio uris for MAVs from CSV
-URI_FILENANME=radio_uris_${LOCATION}.csv
+URI_FILENANME=${SCRIPTS_PATH}/radio_uris_${LOCATION}.csv
 if [ ! -f "${URI_FILENANME}" ];
 then
   echo "Please add radio uris in file ${URI_FILENANME}"
@@ -24,13 +26,13 @@ done < ${URI_FILENANME}
 #Get MAV_IDS from CSV
 #MAV_IDS=(4 5)
 #readarray -d "," MAV_IDS < mav_ids.csv
-if [ ! -f "mav_ids.csv" ];
+if [ ! -f "${SCRIPTS_PATH}/mav_ids.csv" ];
 then
   echo "Please add IDs of the MAVs to run in file mav_ids.csv"
   exit 1
 fi
 declare -a MAV_IDS
-read line < mav_ids.csv
+read line < ${SCRIPTS_PATH}/mav_ids.csv
 echo "Line is : $line"
 for i in $(echo $line | sed "s/,/ /g")
 do
