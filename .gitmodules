@@ -1,3 +1,3 @@
 [submodule "include/capt"]
 	path = include/capt
-	url = git@github.com:KumarRobotics/capt.git
+	url = https://github.com/KumarRobotics/capt.git
