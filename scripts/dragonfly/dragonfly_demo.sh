@@ -17,31 +17,41 @@ echo 'Running mavs with ID' ${MAV_IDS[*]}
 
 MAV_NAMESPACE=dragonfly
 
-echo "Enable motors... ${ROBOT}"
-rosservice call /multi_mav_services/motors true
-read -p "Press [Enter] to takeoff "
+NOMINAL_HEIGHT=1.5
+SPACING=1.7
 
-echo "Takeoff... ${ROBOT}"
-rosservice call /multi_mav_services/takeoff
-read -p "Press [Enter] to go goTo "
+read -p "Press [Enter] to make a line"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, $NOMINAL_HEIGHT], spacing: $SPACING}"
+sleep 1
 
-echo "Sending relative z 0.45"
-for id in ${MAV_IDS[*]}
-do
-  MAV_NAME=${MAV_NAMESPACE}${id}
-  rosservice call /${MAV_NAME}/mav_services/goToRelative "goal:
-  - 0.0
-  - 0.0
-  - 0.45
-  - 0.0"
-  sleep 0.1
-done
+read -p "Press [Enter] to move the line"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.15, yaw: 0.0, center: [1.0, 0.0, $NOMINAL_HEIGHT], spacing: $SPACING}"
+sleep 1
 
-sleep 0.2
-echo "Call tag search"
-for id in ${MAV_IDS[*]}
-do
-  MAV_NAME=${MAV_NAMESPACE}${id}
-  rosservice call /${MAV_NAME}/tag_search "{}"
-  sleep 0.1
-done
+read -p "Press [Enter] to move the line"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: -0.15, yaw: 0.0, center: [-1.0, 0.0, $NOMINAL_HEIGHT], spacing: $SPACING}"
+sleep 1
+
+read -p "Press [Enter] to make a line"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, $NOMINAL_HEIGHT], spacing: $SPACING}"
+sleep 1
+
+read -p "Press [Enter] to form circle"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, $NOMINAL_HEIGHT], spacing: $SPACING}"
+sleep 1
+
+read -p "Press [Enter] to move circle"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.15, yaw: 0.0, center: [1.0, 0.0, $NOMINAL_HEIGHT], spacing: $SPACING}"
+sleep 1
+
+read -p "Press [Enter] to form circle"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: -0.15, yaw: 0.0, center: [-1.5, 0.0, $NOMINAL_HEIGHT], spacing: $SPACING}"
+sleep 1
+
+read -p "Press [Enter] to move circle"
+rosservice call /multi_mav_services/goFormCircle "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, $NOMINAL_HEIGHT], spacing: $SPACING}"
+sleep 1
+
+read -p "Press [Enter] to make a line"
+rosservice call /multi_mav_services/goFormLine "{roll: 0.0, pitch: 0.0, yaw: 0.0, center: [0.0, 0.0, 1.0], spacing: $SPACING}"
+sleep 1
