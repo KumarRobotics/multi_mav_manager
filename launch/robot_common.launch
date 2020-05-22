@@ -39,7 +39,7 @@
     <remap from="~motors" to="motors"/>
   </node>
 
-  <node pkg="mav_manager"
+  <node pkg="kr_mav_manager"
     type="mav_services"
     name="mav_services"
     output="screen">

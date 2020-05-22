@@ -37,11 +37,11 @@ do
   sleep 0.1
 done
 
-sleep 0.2
-echo "Call tag search"
-for id in ${MAV_IDS[*]}
-do
-  MAV_NAME=${MAV_NAMESPACE}${id}
-  rosservice call /${MAV_NAME}/tag_search "{}"
-  sleep 0.1
-done
+# sleep 0.2
+# echo "Call tag search"
+# for id in ${MAV_IDS[*]}
+# do
+#   MAV_NAME=${MAV_NAMESPACE}${id}
+#   rosservice call /${MAV_NAME}/tag_search "{}"
+#   sleep 0.1
+# done

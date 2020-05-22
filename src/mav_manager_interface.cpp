@@ -1,7 +1,7 @@
 #include <multi_mav_manager/mav_manager_interface.h>
 
-#include <mav_manager/GoalTimed.h>
-#include <mav_manager/Vec4.h>
+#include <kr_mav_manager/GoalTimed.h>
+#include <kr_mav_manager/Vec4.h>
 #include <std_srvs/SetBool.h>
 
 class MMcontrol;
@@ -23,17 +23,17 @@ MavManagerInterface::MavManagerInterface(std::string model_name, std::string odo
   sc_motors_ = nh_.serviceClient<std_srvs::SetBool>(service_base_name + "motors");
   sc_takeoff_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "takeoff");
   sc_goHome_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "goHome");
-  sc_setDesVelInWorldFrame_ = nh_.serviceClient<mav_manager::Vec4>(service_base_name + "setDesVelInWorldFrame");
+  sc_setDesVelInWorldFrame_ = nh_.serviceClient<kr_mav_manager::Vec4>(service_base_name + "setDesVelInWorldFrame");
   sc_hover_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "hover");
   sc_ehover_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "ehover");
   sc_land_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "land");
   sc_eland_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "eland");
   sc_estop_ = nh_.serviceClient<std_srvs::Trigger>(service_base_name + "estop");
 
-  sc_goTo_ = nh_.serviceClient<mav_manager::Vec4>(service_base_name + "goTo");
+  sc_goTo_ = nh_.serviceClient<kr_mav_manager::Vec4>(service_base_name + "goTo");
   const std::string goto_srv_base_name = "/" + model_name + "/" + goto_base_name + "/";
   //Use goTo Timed that manages common reference for non-vicon robots
-  sc_goToTimed_ = nh_.serviceClient<mav_manager::GoalTimed>(goto_srv_base_name + "goToTimed");
+  sc_goToTimed_ = nh_.serviceClient<kr_mav_manager::GoalTimed>(goto_srv_base_name + "goToTimed");
 
   odom_sub_ = nh_.subscribe("/" + model_name_ + "/" + odom_topic, 10, &MavManagerInterface::odom_cb, this);
   battery_sub_ = nh_.subscribe("/" + model_name_ + "/battery", 10, &MavManagerInterface::battery_cb, this);

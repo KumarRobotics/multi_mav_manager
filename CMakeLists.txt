@@ -13,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   sensor_msgs
   geometry_msgs
-  mav_manager
+  kr_mav_manager
   std_msgs
   std_srvs
   cmake_modules
@@ -43,13 +43,13 @@ catkin_package(
   INCLUDE_DIRS
     include
     include/capt/hungarian
-  LIBRARIES mav_manager
+  LIBRARIES kr_mav_manager
   CATKIN_DEPENDS
     roscpp
     nav_msgs
     sensor_msgs
     geometry_msgs
-    mav_manager
+    kr_mav_manager
     std_msgs
     std_srvs
     message_runtime

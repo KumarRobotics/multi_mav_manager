@@ -313,7 +313,7 @@ bool MMControl::goForm(multi_mav_manager::Formation::Request &req, multi_mav_man
   h.computeAssignment();  // Use capt to find assignments
   calculateDuration();    // Determine temporal scaling based on max dist
 
-  mav_manager::GoalTimed srv;
+  kr_mav_manager::GoalTimed srv;
   for(int i=0; i<num_active_bots_; i++){
 
     ROS_DEBUG_STREAM("Robot: " << i << " has goal number " << assignment_matrix_[i]);
@@ -450,8 +450,8 @@ void MMControl::createDistMatrix(){
   }
 }
 
-bool MMControl::setDesVelInWorldFrame_cb(mav_manager::Vec4::Request &req, mav_manager::Vec4::Response &res) {
-  return loop<mav_manager::Vec4>(req, res, &MavManagerInterface::sc_setDesVelInWorldFrame_, "setDesVelInWorldFrame");
+bool MMControl::setDesVelInWorldFrame_cb(kr_mav_manager::Vec4::Request &req, kr_mav_manager::Vec4::Response &res) {
+  return loop<kr_mav_manager::Vec4>(req, res, &MavManagerInterface::sc_setDesVelInWorldFrame_, "setDesVelInWorldFrame");
 }
 bool MMControl::hover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res) {
   return loop<std_srvs::Trigger>(req, res, &MavManagerInterface::sc_hover_, "hover");

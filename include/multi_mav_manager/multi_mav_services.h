@@ -6,7 +6,7 @@
 
 #include <ros/ros.h>
 
-#include <mav_manager/mav_manager_services.h>
+#include <kr_mav_manager/mav_manager_services.h>
 #include <multi_mav_manager/Formation.h>
 #include <multi_mav_manager/RawPosFormation.h>
 #include <multi_mav_manager/mav_manager_interface.h>
@@ -45,7 +45,7 @@ class MMControl
     bool calculateGoals();
     void createDistMatrix();
 
-    bool setDesVelInWorldFrame_cb(mav_manager::Vec4::Request &req, mav_manager::Vec4::Response &res);
+    bool setDesVelInWorldFrame_cb(kr_mav_manager::Vec4::Request &req, kr_mav_manager::Vec4::Response &res);
     bool hover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
     bool ehover_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
     bool land_cb(std_srvs::Trigger::Request &req, std_srvs::Trigger::Response &res);
