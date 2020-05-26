@@ -27,7 +27,7 @@
 
   <node pkg="nodelet"
     type="nodelet"
-    args="load so3_control/SO3ControlNodelet controller_nodelet"
+    args="load kr_mav_controllers/SO3ControlNodelet controller_nodelet"
     name="so3_control"
     required="true"
     output="screen">

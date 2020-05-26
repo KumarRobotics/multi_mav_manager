@@ -58,6 +58,7 @@ catkin_package(
 add_library(capt include/capt/hungarian/hungarian.cpp)
 
 add_executable(multi_mav_services src/multi_mav_services.cpp src/mav_manager_interface.cpp)
+add_dependencies(multi_mav_services ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(multi_mav_services capt ${catkin_LIBRARIES})
 
 install(TARGETS
