@@ -27,3 +27,8 @@
 *.exe
 *.out
 *.app
+
+*.pcd
+*.pyc
+qtcreator-*
+*.user
