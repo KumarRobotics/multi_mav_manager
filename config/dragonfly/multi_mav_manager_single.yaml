@@ -1,9 +1,0 @@
-model_names: [
-  ]
-
-robot_radius: 0.35
-battery_low: 9.2s
-
-max_vel: 5.0
-max_acc: 4.0
-

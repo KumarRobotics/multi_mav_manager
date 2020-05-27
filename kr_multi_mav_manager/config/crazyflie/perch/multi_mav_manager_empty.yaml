@@ -1,0 +1,21 @@
+model_names: [
+  ]
+
+robot_radius: 0.1
+battery_low: 3.50
+
+min_safety_bounds: [-8.0, -2.5, 0.2] #Mininum safety bounds x, y, z
+max_safety_bounds: [7.0, 2.5, 2.5] #Maximum safety bounds x, y, z
+
+max_vel: 2.0
+max_acc: 0.8
+
+#Rotating world params
+omega/x: 10.0
+omega/y: 0.0
+omega/z: 0.1
+room_c/x: 0.0
+room_c/x: 0.0
+room_c/x: 1.0
+alpha_mag: 0.5
+
