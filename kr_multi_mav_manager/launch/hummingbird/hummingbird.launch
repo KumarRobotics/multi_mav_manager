@@ -1,0 +1,32 @@
+<launch>
+
+  <arg name="model" default="quadrotor"/>
+  <arg name="sim" default="1"/>
+  <arg name="config_path" default="$(find kr_multi_mav_manager)/config/hummingbird"/>
+  <arg name="vicon" default="1"/>
+  <arg name="vicon_fps" default="100"/>
+  <arg name="slow_baud_rate" default="true"/>
+  <arg name="mass" default="0.5"/>
+  <arg name="serial_device" default="/dev/ttyUSB0"/>
+
+
+  <group ns="$(arg model)">
+
+    <param name="mass" value="$(arg mass)"/>
+
+    <include file="$(find kr_multi_mav_manager)/launch/robot_common.launch">
+      <arg name="config_path" value="$(arg config_path)"/>
+      <arg name="mass"        value="$(arg mass)"       />
+      <arg name="sim"         value="$(arg sim)"        />
+      <arg name="model"       value="$(arg model)"      />
+      <arg name="robot_type"  value="hummingbird"       />
+    </include>
+  
+    <include file="$(find quad_serial_comm)/launch/asctec_comms.launch" unless="$(arg sim)">
+      <arg name="slow_baud_rate" value="true"/>
+      <arg name="remote" value="false"/>
+      <arg name="device" value="$(arg serial_device)"/>
+    </include>
+
+  </group>
+</launch>

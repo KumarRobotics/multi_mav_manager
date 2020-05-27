@@ -1,0 +1,23 @@
+<launch>
+
+  <arg name="odom_topic" default="odom_static"/>
+  <arg name="config_path" default="$(find kr_multi_mav_manager)/config/dragonfly"/>
+<!--
+  <node pkg="kr_multi_mav_manager"
+      type="multi_mav_services"
+      name="multi_mav_services"
+      output="screen">
+    <rosparam file="$(arg config_path)/kr_multi_mav_manager.yaml"/>
+    <param name="odom_topic" value="$(arg odom_topic)"/>
+  </node> -->
+
+  <!--Multimaster discovery/sync-->
+  <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery">
+    <param name="mcast_group" value="224.0.0.1" />
+  </node>
+
+  <node pkg="master_sync_fkie" type="master_sync" name="multimaster_client_sync">
+    <rosparam file="$(find kr_multi_mav_manager)/config/dragonfly/multimaster_groundstation.yaml" />
+  </node>
+
+</launch>
