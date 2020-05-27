@@ -1,0 +1,30 @@
+<package>
+  <name>rqt_multi_mav_gui</name>
+  <version>0.1.0</version>
+  <description>Provides a GUI plugin for Multi MAV Manager.</description>
+  <maintainer email="ablasdel@gmail.com">Dinesh Thakur</maintainer>
+  <maintainer email="aarow@seas.upenn.edu">Aaron Weinstein</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/rqt_multi_mav_gui</url>
+  <url type="repository">https://github.com/KumarRobotics/kr_ui</url>
+
+  <author>Dinesh Thakur</author>
+  <author>Aaron Weinstein</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>python-rospkg</run_depend>
+  <run_depend>rostopic</run_depend>
+  <run_depend>rqt_gui</run_depend>
+  <run_depend>rqt_gui_py</run_depend>
+
+  <run_depend>kr_mav_manager</run_depend>
+  <run_depend>kr_multi_mav_manager</run_depend>
+  
+  <export>
+    <rqt_gui plugin="${prefix}/plugin.xml"/>
+  </export>
+</package>

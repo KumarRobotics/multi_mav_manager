@@ -1,0 +1,17 @@
+<library path="src">
+  <class name="MultiMavGUI" type="rqt_multi_mav_gui.multi_mav_gui.MultiMavGUI" base_class_type="rqt_gui_py::Plugin">
+    <description>
+      A Python GUI plugin to control multiple MAVs using Multi MAV Manager
+    </description>
+    <qtgui>
+      <group>
+        <label>Multi Robot Tools</label>
+        <icon type="theme">folder</icon>
+        <statustip>Plugins related to controlling multiple MAVs</statustip>
+      </group>
+      <label>Multi Mav GUI</label>
+      <icon type="theme">input-gaming</icon>
+      <statustip>A Python GUI plugin for controlling formations</statustip>
+    </qtgui>
+  </class>
+</library>
