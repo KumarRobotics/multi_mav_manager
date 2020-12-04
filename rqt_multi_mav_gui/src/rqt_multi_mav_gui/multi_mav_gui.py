@@ -100,11 +100,11 @@ class MultiMavGUI(Plugin):
       rospy.wait_for_service(motors_topic, timeout=1.0)
       motors_on = rospy.ServiceProxy(motors_topic, std_srvs.srv.SetBool)
       resp = motors_on(True)
-      print 'Motors on ', resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
-    except(rospy.ROSException), e:
-      print "Service call failed: %s"%e
+      print('Motors on ', resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
+    except rospy.ROSException as e:
+      print("Service call failed: %s"%e)
 
   def _on_motors_off_pressed(self):
     try:
@@ -112,11 +112,11 @@ class MultiMavGUI(Plugin):
       rospy.wait_for_service(motors_topic, timeout=1.0)
       motors_off = rospy.ServiceProxy(motors_topic, std_srvs.srv.SetBool)
       resp = motors_off(False)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
-    except(rospy.ROSException), e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
+    except rospy.ROSException as e:
+      print("Service call failed: %s"%e)
 
   def _on_rotate_on_pressed(self):
     rotate_topic = '/rotate_on'
@@ -134,11 +134,11 @@ class MultiMavGUI(Plugin):
       rospy.wait_for_service(land_topic, timeout=1.0)
       land = rospy.ServiceProxy(land_topic, std_srvs.srv.Trigger)
       resp = land()
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
-    except(rospy.ROSException), e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
+    except rospy.ROSException as e:
+      print("Service call failed: %s"%e)
 
   def _on_estop_pressed(self):
     try:
@@ -146,11 +146,11 @@ class MultiMavGUI(Plugin):
       rospy.wait_for_service(estop_topic, timeout=1.0)
       estop = rospy.ServiceProxy(estop_topic, std_srvs.srv.Trigger)
       resp = estop()
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
-    except(rospy.ROSException), e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
+    except rospy.ROSException as e:
+      print("Service call failed: %s"%e)
 
   def _on_takeoff_pressed(self):
     try:
@@ -158,11 +158,11 @@ class MultiMavGUI(Plugin):
       rospy.wait_for_service(takeoff_topic, timeout=1.0)
       takeoff = rospy.ServiceProxy(takeoff_topic, std_srvs.srv.Trigger)
       resp = takeoff()
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
-    except(rospy.ROSException), e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
+    except rospy.ROSException as e:
+      print("Service call failed: %s"%e)
 
   def _on_circle_pressed(self):
 
@@ -178,15 +178,15 @@ class MultiMavGUI(Plugin):
 
     req.spacing = self._widget.spacing_doubleSpinBox.value()
 
-    print req.center
+    print(req.center)
 
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormCircle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-      print resp.message
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+      print(resp.message)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_rect_pressed(self):
 
@@ -202,14 +202,14 @@ class MultiMavGUI(Plugin):
 
     req.spacing = self._widget.spacing_doubleSpinBox.value()
 
-    print req.center
+    print(req.center)
 
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormRect', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_line_pressed(self):
 
@@ -225,14 +225,14 @@ class MultiMavGUI(Plugin):
 
     req.spacing = self._widget.spacing_doubleSpinBox.value()
 
-    print req.center
+    print(req.center)
 
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormLine', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_angle_pressed(self):
 
@@ -248,14 +248,14 @@ class MultiMavGUI(Plugin):
 
     req.spacing = self._widget.spacing_doubleSpinBox.value()
 
-    print req.center
+    print(req.center)
 
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormAngle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   ## Predefined shapes
   def _on_circle1_butt_pressed(self):
@@ -270,9 +270,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormCircle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_circle2_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -286,9 +286,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormCircle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_circle3_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -302,9 +302,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormCircle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_christmas1_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -318,9 +318,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormAngle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_christmas2_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -334,9 +334,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormAngle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_christmas3_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -350,9 +350,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormAngle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_flyingv_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -366,9 +366,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormAngle', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_line1_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -382,9 +382,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormLine', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_stairs_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -398,9 +398,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormLine', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_rect1_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -414,9 +414,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormRect', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
 
   def _on_rect2_butt_pressed(self):
     req = kr_multi_mav_manager.srv.FormationRequest()
@@ -430,9 +430,9 @@ class MultiMavGUI(Plugin):
     try:
       form_topic = rospy.ServiceProxy('/'+self.mav_node_name+'/goFormRect', kr_multi_mav_manager.srv.Formation())
       resp = form_topic(req)
-      print resp.success
-    except rospy.ServiceException, e:
-      print "Service call failed: %s"%e
+      print(resp.success)
+    except rospy.ServiceException as e:
+      print("Service call failed: %s"%e)
   #  def _unregister_publisher(self):
   #    if self._publisher is not None:
   #     self._publisher.unregister()
