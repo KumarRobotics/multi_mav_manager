@@ -62,7 +62,7 @@ add_dependencies(multi_mav_services ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}
 target_link_libraries(multi_mav_services capt ${catkin_LIBRARIES})
 
 install(TARGETS
-    multi_mav_services
+    multi_mav_services capt
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -70,3 +70,4 @@ install(TARGETS
 
 install(DIRECTORY config/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config)
 install(DIRECTORY launch/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch)
+install(DIRECTORY scripts/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/scripts)
