@@ -1,6 +1,6 @@
 <launch>
 
-  <arg name="old_api" default="true"/>
+  <arg name="old_api" default="false"/>
 
   <group if="$(arg old_api)">
     <!--Multimaster discovery/sync-->

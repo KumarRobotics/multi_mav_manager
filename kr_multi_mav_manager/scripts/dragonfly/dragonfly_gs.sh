@@ -60,7 +60,7 @@ tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:0; 
 tmux split-window -t $SESSION_NAME
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch kr_multi_mav_manager dragonfly_manager.launch odom_topic:=odom_tag config_path:=$HOME/.ros/" Enter
 tmux split-window -t $SESSION_NAME
-tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch kr_multi_mav_manager multi_dragonfly_gs.launch"
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch kr_multi_mav_manager multi_dragonfly_gs.launch" Enter
 tmux select-layout -t $SESSION_NAME tiled
 
 # Add window to easily kill all processes
