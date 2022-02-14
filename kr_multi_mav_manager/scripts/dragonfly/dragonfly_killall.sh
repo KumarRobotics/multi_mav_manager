@@ -1,5 +1,8 @@
 #!/bin/bash
 
+USER_NAME=root
+#USER_NAME=linaro
+
 #MAV_IDS=(4 5)
 #Get MAV_IDS from CSV
 #readarray -d "," MAV_IDS < mav_ids.csv
@@ -48,9 +51,9 @@ do
   MAV_NAME=${MAV_NAMESPACE}${id}
 
   tmux new-window -t $SESSION_NAME -n "r${id}"
-  tmux send-keys -t $SESSION_NAME "ssh linaro@${MAV_NAME}" Enter
+  tmux send-keys -t $SESSION_NAME "ssh ${USER_NAME}@${MAV_NAME}" Enter
   tmux send-keys -t $SESSION_NAME "sudo -s" Enter
-  tmux send-keys -t $SESSION_NAME "tmux kill-session -t tmux_tag" Enter
+  tmux send-keys -t $SESSION_NAME "tmux kill-session -t tmux_snav" Enter
   tmux send-keys -t $SESSION_NAME "exit" Enter #exit sudo
   tmux send-keys -t $SESSION_NAME "exit" Enter #exit ssh
   tmux select-layout -t $SESSION_NAME tiled

@@ -3,5 +3,5 @@ ignore_topics: ['/rosout', '/rosout_agg', '/tf*']
 ignore_services: ['/*get_loggers', '/*set_logger_level']
 
 sync_nodes: ['/csv_to_waypoints']
-sync_topics: ['/dragonfly*/position_cmd', '/dragonfly*/odom', '/dragonfly*/quadrotor_ukf/control_odom_throttled', '/dragonfly*/odom_tag', '/dragonfly*/traj']
+sync_topics: ['/dragonfly*/position_cmd', '/dragonfly*/odom', '/dragonfly*/quadrotor_ukf/control_odom', '/dragonfly*/quadrotor_ukf/control_odom_throttled', '/dragonfly*/odom_tag', '/dragonfly*/traj']
 sync_services: ['/dragonfly*/tag']
