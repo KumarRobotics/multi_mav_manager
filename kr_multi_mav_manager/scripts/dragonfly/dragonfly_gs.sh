@@ -35,17 +35,17 @@ fi
 
 # Generate rviz config file for specific mav from default one
 RVIZ_CONFIG_FILE="$HOME/.ros/wp_nav.rviz"
-LAUNCH_PATH=$(rospack find quadrotor_simulator)
+LAUNCH_PATH=$(rospack find kr_mav_launch)
 cp $LAUNCH_PATH/launch/rviz_config.rviz ${RVIZ_CONFIG_FILE}
 sed -i "s/quadrotor/temp/g" ${RVIZ_CONFIG_FILE}
 
 # Generate multi_mav_manger yaml config file based on number of robots
-cp $(rospack find kr_multi_mav_manager)/config/dragonfly/kr_multi_mav_manager_dragonfly.yaml ~/.ros/kr_multi_mav_manager.yaml
+cp $(rospack find kr_multi_mav_manager)/config/dragonfly/multi_mav_manager_dragonfly.yaml ~/.ros/multi_mav_manager.yaml
 for id in ${MAV_IDS[*]}
 do
   MAV_NAME=${MAV_NAMESPACE}${id}
-  sed -i "1a\  '"${MAV_NAME}"'," ~/.ros/kr_multi_mav_manager.yaml
-  echo "/${MAV_NAME}/active: true" >> ~/.ros/kr_multi_mav_manager.yaml
+  sed -i "1a\  '"${MAV_NAME}"'," ~/.ros/multi_mav_manager.yaml
+  echo "/${MAV_NAME}/active: true" >> ~/.ros/multi_mav_manager.yaml
 done
 
 # Make mouse useful in copy mode

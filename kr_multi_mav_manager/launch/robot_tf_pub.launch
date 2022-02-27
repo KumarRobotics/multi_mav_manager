@@ -1,0 +1,29 @@
+<launch>
+  <arg name="mav_name" default="ddk"/>
+  <arg name="odom_topic" default="ground_truth/odom"/>
+  <arg name="odom_frame_id" default="odom"/>
+  <arg name="world_frame_id" default="world"/>
+  <arg name="pub_odom_base_link" default="true"/>
+
+  <group ns="$(arg mav_name)">
+
+    <!--World to odom TF publisher -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="world_odom_static_publisher" args="0 0 0 0 0 0 1 $(arg world_frame_id) $(arg mav_name)/$(arg odom_frame_id)" />
+
+    <!--Odom to base_link TF publisher -->
+    <node pkg="mrsl_quadrotor_utils" type="tf_pub" name="odom_tf_pub" if="$(arg pub_odom_base_link)">
+      <param name="odom_frame_id" value="$(arg mav_name)/$(arg odom_frame_id)"/>
+      <param name="base_frame_id" value="$(arg mav_name)/base_link"/>
+      <remap from="~odom" to="$(arg odom_topic)"/>
+    </node>
+
+    <arg name="vehicle_description" default="$(find mrsl_quadrotor_description)/urdf/dragon_ddk/dragon_ddk.gazebo.xacro"/>
+    <node name="vehicle_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+      <param name="robot_description" command="xacro '$(arg vehicle_description)' "/>
+      <param name="publish_frequency" value="10"/>
+      <param name="use_tf_static" value="false"/>
+      <param name="tf_prefix" value="$(arg mav_name)"/>
+    </node>
+
+  </group>
+</launch>

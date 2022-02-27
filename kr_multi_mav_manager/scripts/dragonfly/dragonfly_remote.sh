@@ -1,5 +1,8 @@
 #!/bin/bash
 
+USER_NAME=root
+#USER_NAME=linaro
+
 #MAV_IDS=(4 5)
 #Get MAV_IDS from CSV
 #readarray -d "," MAV_IDS < mav_ids.csv
@@ -46,9 +49,9 @@ do
   MAV_NAME=${MAV_NAMESPACE}${id}
 
   tmux new-window -t $SESSION_NAME -n "r${id}"
-  tmux send-keys -t $SESSION_NAME "ssh linaro@${MAV_NAME}" Enter
+  tmux send-keys -t $SESSION_NAME "ssh ${USER_NAME}@${MAV_NAME}" Enter
   tmux send-keys -t $SESSION_NAME "sudo -s" Enter
-  tmux send-keys -t $SESSION_NAME "./tmux_tag.sh" Enter
+  tmux send-keys -t $SESSION_NAME "chmod a+x tmux_voxl.sh; ./tmux_voxl.sh" Enter
   tmux select-layout -t $SESSION_NAME tiled
 done
 

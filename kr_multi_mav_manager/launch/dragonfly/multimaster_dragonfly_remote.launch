@@ -1,8 +1,10 @@
 <launch>
-  <arg name="mav_name" default="dragonfly1"/>
+  <arg name="mav_name" default="$(optenv MAV_NAME)"/>
+  <arg name="old_api" default="false"/>
 
   <group ns="$(arg mav_name)">
 
+  <group if="$(arg old_api)">
     <!--Multimaster -->
     <node pkg="master_discovery_fkie" type="master_discovery" name="master_discovery">
       <param name="mcast_group" value="224.0.0.1" />
@@ -11,6 +13,20 @@
     <node pkg="master_sync_fkie" type="master_sync" name="multimaster_client_sync">
       <rosparam file="$(find kr_multi_mav_manager)/config/dragonfly/multimaster_remote.yaml" />
     </node>
+  </group>
+
+  <group unless="$(arg old_api)">
+
+    <!--Multimaster -->
+    <node pkg="fkie_master_discovery" type="master_discovery" name="master_discovery">
+      <param name="mcast_group" value="226.0.0.0" />
+    </node>
+
+    <node pkg="fkie_master_sync" type="master_sync" name="multimaster_client_sync">
+      <rosparam file="$(find kr_multi_mav_manager)/config/dragonfly/multimaster_remote.yaml" />
+    </node>
+
+  </group>
 
   </group>
 </launch>
