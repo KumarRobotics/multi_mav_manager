@@ -1,6 +1,6 @@
 <launch>
   <arg name="mav_name" default="$(optenv MAV_NAME)"/>
-  <arg name="old_api" default="true"/>
+  <arg name="old_api" default="false"/>
 
   <group ns="$(arg mav_name)">
 
