@@ -25,10 +25,10 @@
 
   <node pkg="nodelet"
     type="nodelet"
-    name="trackers_manager"
-    args="load trackers_manager/TrackersManager controller_nodelet"
+    name="kr_trackers_manager"
+    args="load kr_trackers_manager/TrackersManager controller_nodelet"
     output="screen">
-    <rosparam file="$(find trackers_manager)/config/trackers.yaml"/>
+    <rosparam file="$(find kr_trackers_manager)/config/trackers.yaml"/>
     <rosparam file="$(arg config_path)/tracker_params.yaml"/>
     <rosparam file="$(arg config_path)/gains.yaml"/>
     <remap from="~odom" to="odom_static"/>

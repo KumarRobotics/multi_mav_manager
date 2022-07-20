@@ -23,7 +23,7 @@
     <!-- For communication -->
     <node pkg="nodelet"
       type="nodelet"
-      args="load crazyflie_interface/SO3CmdToCrazyflie controller_nodelet"
+      args="load kr_crazyflie_interface/SO3CmdToCrazyflie controller_nodelet"
       name="so3cmd_to_crazyflie"
       required="true"
       clear_params="true"
@@ -31,7 +31,7 @@
       <remap from="~odom" to="odom"/>
       <remap from="~so3_cmd" to="so3_cmd"/>
       <remap from="~cmd_vel" to="cmd_vel"/>
-      <rosparam file="$(find crazyflie_interface)/config/crazyflie.yaml"/>
+      <rosparam file="$(find kr_crazyflie_interface)/config/crazyflie.yaml"/>
     </node>
 
     <include file="$(find crazyflie_driver)/launch/crazyflie_add.launch">
