@@ -44,12 +44,12 @@ echo 'Running mavs with ID' ${MAV_IDS[*]}
 
 # Generate rviz config file for specific mav from default one
 RVIZ_CONFIG_FILE="$HOME/.ros/wp_nav.rviz"
-LAUNCH_PATH=$(rospack find quadrotor_simulator)
+LAUNCH_PATH=$(rospack find kr_mav_launch)
 cp $LAUNCH_PATH/launch/rviz_config.rviz ${RVIZ_CONFIG_FILE}
 sed -i "s/quadrotor/temp/g" ${RVIZ_CONFIG_FILE}
 
 # Generate multi_mav_manger yaml config file based on number of robots
-cp $(rospack find kr_multi_mav_manager)/config/crazyflie/${LOCATION}/kr_multi_mav_manager_empty.yaml ~/.ros/kr_multi_mav_manager.yaml
+cp $(rospack find kr_multi_mav_manager)/config/crazyflie/${LOCATION}/multi_mav_manager_empty.yaml ~/.ros/kr_multi_mav_manager.yaml
 for id in ${MAV_IDS[*]}
 do
   MAV_NAME=${MAV_NAMESPACE}${id}
@@ -87,18 +87,18 @@ tmux setw -g mouse on
 tmux rename-window -t $SESSION_NAME "Main"
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; roscore" Enter
 tmux split-window -t $SESSION_NAME -h
-tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:0; rqt --standalone ${RQT_GUI}" Enter
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 5; export DISPLAY=:0; rqt --standalone ${RQT_GUI}" Enter
 #tmux split-window -t $SESSION_NAME
 #tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:0; rosrun rviz rviz -d ${RVIZ_CONFIG_FILE}" Enter
 
 tmux new-window -t $SESSION_NAME -n "Multi"
-tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; cd ~/.ros; roslaunch vicon.launch" Enter
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 5; cd ~/.ros; roslaunch vicon.launch" Enter
 tmux split-window -t $SESSION_NAME -h
 tmux select-pane -t 0
 tmux split-window -t $SESSION_NAME -v
-tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch crazyflie_driver crazyflie_server.launch" Enter
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 5; roslaunch crazyflie_driver crazyflie_server.launch" Enter
 tmux split-window -t $SESSION_NAME -v
-tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch kr_multi_mav_manager kr_multi_mav_manager.launch odom_topic:=odom config_path:=$HOME/.ros/" Enter
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 5; roslaunch kr_multi_mav_manager multi_mav_manager.launch odom_topic:=odom config_path:=$HOME/.ros/" Enter
 tmux select-pane -t 3
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; roscd kr_multi_mav_manager/scripts/crazyflie; ./crazyflie_demo.sh"
 # tmux select-layout -t $SESSION_NAME vertical
@@ -112,7 +112,7 @@ do
   MAV_NAME=${MAV_NAMESPACE}${id}
   echo $MAV_NAME ${MAV_RADIO_URIS[${id}]}
   tmux new-window -t $SESSION_NAME -n "r${id}"
-  tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch kr_multi_mav_manager crazyflie.launch model:=${MAV_NAME} uri:=${MAV_RADIO_URIS[${id}]} mass:=${MAV_MASS} config_path:=${CONFIG_PATH} rotate_world:=${ROTATE_WORLD}" Enter
+  tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 6; roslaunch kr_multi_mav_manager crazyflie.launch model:=${MAV_NAME} uri:=${MAV_RADIO_URIS[${id}]} mass:=${MAV_MASS} config_path:=${CONFIG_PATH} rotate_world:=${ROTATE_WORLD}" Enter
 done
 
 tmux select-window -t $SESSION_NAME:1
