@@ -5,7 +5,7 @@ CONFIG_PATH=$(rospack find kr_multi_mav_manager)/config/crazyflie/${LOCATION}
 SCRIPTS_PATH=$(rospack find kr_multi_mav_manager)/scripts/crazyflie/
 
 MAV_NAMESPACE=loco
-MAV_MASS=0.036
+MAV_MASS=0.04
 ROTATE_WORLD=false
 
 #Get all radio uris for MAVs from CSV
