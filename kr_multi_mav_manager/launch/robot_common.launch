@@ -16,11 +16,11 @@
   <node pkg="nodelet"
     type="nodelet"
     name="trackers_manager"
-    args="load trackers_manager/TrackersManager controller_nodelet"
+    args="load kr_trackers_manager/TrackersManager controller_nodelet"
     output="screen">
-    <rosparam file="$(find trackers_manager)/config/trackers.yaml"/>
-    <rosparam file="$(arg config_path)/tracker_params.yaml"/>
-    <rosparam file="$(arg config_path)/gains.yaml"/>
+    <rosparam file="$(find kr_mav_launch)/config/trackers.yaml"/>
+    <rosparam file="$(find kr_mav_launch)/config/tracker_params.yaml"/>
+    <rosparam file="$(find kr_mav_launch)/config/gains.yaml"/>
     <remap from="~odom" to="odom"/>
     <remap from="~cmd" to="position_cmd"/>
   </node>
